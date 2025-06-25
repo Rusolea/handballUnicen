@@ -6,8 +6,8 @@ const QueHacemos = () => {
       icon: Target,
       title: 'Entrenamientos Regulares',
       description: 'Sesiones de entrenamiento técnico, táctico y físico',
-      horarios: 'Lunes, Miércoles y Viernes de 18:00 a 20:00',
-      lugar: 'Gimnasio Universitario'
+      horarios: 'Ver sección por categorías más abajo',
+      lugar: 'Múltiples sedes: SUM, Instituto de Ed. Física, CCU y Campus'
     },
     {
       icon: Trophy,
@@ -34,22 +34,52 @@ const QueHacemos = () => {
 
   const categorias = [
     {
-      nombre: 'Categoría Sub-17',
-      descripcion: 'Jugadores de 15 a 17 años',
-      entrenador: 'Prof. Carlos Rodríguez',
-      horarios: 'Lunes y Miércoles 18:00-20:00'
+      nombre: 'EFI',
+      descripcion: 'Entrenamiento Formativo Inicial',
+      entrenador: '',
+      horarios: 'Lunes y Miércoles 19:00 a 20:00 (SUM SABATO)'
     },
     {
-      nombre: 'Categoría Sub-20',
-      descripcion: 'Jugadores de 18 a 20 años',
-      entrenador: 'Prof. María González',
-      horarios: 'Martes y Jueves 18:00-20:00'
+      nombre: 'Mini e Infantiles',
+      descripcion: 'Niños/as en edad escolar',
+      entrenador: '',
+      horarios: 'Lunes y Miércoles 19:00 a 20:15, Sábados 10:30 a 12:00 (Inst. Ed. Física)'
     },
     {
-      nombre: 'Categoría Libre',
-      descripcion: 'Jugadores mayores de 20 años',
-      entrenador: 'Prof. Juan Martínez',
-      horarios: 'Viernes 18:00-20:00, Sábados 10:00-12:00'
+      nombre: 'Menores Masculino',
+      descripcion: 'Jugadores menores',
+      entrenador: '',
+      horarios: 'Lunes 16:00 a 17:30 (CCU), Jueves 17:00 a 19:00 y Viernes 16:00 a 17:30 (Campus)'
+    },
+    {
+      nombre: 'Menores-Cadetes Femenino',
+      descripcion: 'Jugadoras menores y cadetes',
+      entrenador: '',
+      horarios: 'Lunes y Miércoles 16:00 a 17:30 (CCU), Viernes 17:30 a 19:00 (Campus)'
+    },
+    {
+      nombre: 'Cadetes - Juveniles Masculino',
+      descripcion: 'Cadetes y juveniles varones',
+      entrenador: '',
+      horarios: 'Martes y Jueves 17:00 a 19:00, Viernes 16:00 a 17:30 (Campus)'
+    },
+    {
+      nombre: 'Juveniles Femenino',
+      descripcion: 'Jugadoras juveniles',
+      entrenador: '',
+      horarios: 'Lunes y Miércoles 20:15 a 21:45 (Inst. Ed. Física), Viernes 17:30 a 19:00 (Campus)'
+    },
+    {
+      nombre: 'Mayores Femenino',
+      descripcion: 'Jugadoras mayores',
+      entrenador: '',
+      horarios: 'Lunes y Miércoles 20:15 a 21:45 (Inst. Ed. Física)'
+    },
+    {
+      nombre: 'Mayores Masculino',
+      descripcion: 'Jugadores mayores',
+      entrenador: '',
+      horarios: 'Martes y Jueves 20:00 a 21:30 (Campus)'
     }
   ];
 
@@ -147,22 +177,24 @@ const QueHacemos = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categorias.map((categoria) => (
-              <div key={categoria.nombre} className="card p-6 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-azulUnicen to-celesteUnicen rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-10 h-10 text-white" />
+              <div key={categoria.nombre} className="card p-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-azulUnicen to-celesteUnicen rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
                   {categoria.nombre}
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-4 text-sm text-center">
                   {categoria.descripcion}
                 </p>
                 <div className="space-y-2 text-sm">
-                  <p className="text-azulUnicen font-medium">
-                    <strong>Entrenador:</strong> {categoria.entrenador}
-                  </p>
+                  {categoria.entrenador && (
+                    <p className="text-azulUnicen font-medium">
+                      <strong>Entrenador:</strong> {categoria.entrenador}
+                    </p>
+                  )}
                   <p className="text-gray-600">
                     <strong>Horarios:</strong> {categoria.horarios}
                   </p>
@@ -173,8 +205,57 @@ const QueHacemos = () => {
         </div>
       </section>
 
-      {/* Entrenamientos Section */}
+      {/* Torneos Section */}
       <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Torneos y Competencias
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Participamos en diversas competencias a nivel local, regional y nacional
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {torneos.map((torneo) => (
+              <div key={torneo.nombre} className="card p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-verdeUnicen to-limaUnicen rounded-lg flex items-center justify-center">
+                    <Trophy className="w-6 h-6 text-white" />
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    torneo.estado === 'En curso' ? 'bg-green-100 text-green-800' :
+                    torneo.estado === 'Próximo' ? 'bg-blue-100 text-blue-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {torneo.estado}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {torneo.nombre}
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  {torneo.descripcion}
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center text-gray-500">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    {torneo.fecha}
+                  </div>
+                  <div className="flex items-center text-gray-500">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    {torneo.ubicacion}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Información Adicional */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -217,93 +298,33 @@ const QueHacemos = () => {
                     <span className="text-white text-xs">4</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Psicología Deportiva</h4>
-                    <p className="text-gray-600">Manejo de presión y trabajo en equipo</p>
+                    <h4 className="font-semibold text-gray-900">Formación Integral</h4>
+                    <p className="text-gray-600">Valores deportivos y trabajo en equipo</p>
                   </div>
                 </li>
               </ul>
             </div>
-            <div className="bg-gradient-to-br from-verdeUnicen to-limaUnicen rounded-lg p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6">Horarios de Entrenamiento</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Lunes</span>
-                  <span>18:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Martes</span>
-                  <span>18:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Miércoles</span>
-                  <span>18:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Jueves</span>
-                  <span>18:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Viernes</span>
-                  <span>18:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Sábado</span>
-                  <span>10:00 - 12:00</span>
-                </div>
-              </div>
-              <div className="mt-6 p-4 bg-white bg-opacity-20 rounded-lg">
-                <p className="text-sm">
-                  <strong>Ubicación:</strong> Gimnasio Universitario - Campus UNICEN
-                </p>
-              </div>
+            <div className="bg-gradient-to-br from-verdeUnicen to-azulUnicen rounded-lg p-8 text-white">
+              <h3 className="text-2xl font-bold mb-4">Nuestras Sedes</h3>
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                  SUM SABATO
+                </li>
+                <li className="flex items-center">
+                  <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                  Instituto de Educación Física
+                </li>
+                <li className="flex items-center">
+                  <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                  CCU (Centro Cultural Universitario)
+                </li>
+                <li className="flex items-center">
+                  <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                  Campus Universitario
+                </li>
+              </ul>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Torneos Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Torneos y Competencias
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Participamos en diversas competencias a nivel regional y nacional
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {torneos.map((torneo) => (
-              <div key={torneo.nombre} className="card p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-azulUnicen to-celesteUnicen rounded-lg flex items-center justify-center">
-                    <Trophy className="w-6 h-6 text-white" />
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    torneo.estado === 'En curso' ? 'bg-green-100 text-green-800' :
-                    torneo.estado === 'Próximo' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {torneo.estado}
-                  </span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {torneo.nombre}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {torneo.descripcion}
-                </p>
-                <div className="space-y-2 text-sm">
-                  <p className="text-gray-500">
-                    <strong>Fecha:</strong> {torneo.fecha}
-                  </p>
-                  <p className="text-gray-500">
-                    <strong>Ubicación:</strong> {torneo.ubicacion}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

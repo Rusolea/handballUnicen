@@ -1,4 +1,9 @@
 import { Users, Award, Target, Heart } from 'lucide-react';
+import handballEquipo2 from '../assets/handball_equipo2.webp';
+import handballMini from '../assets/handball_mini.webp';
+import equipoHandball from '../assets/equipo_handball.webp';
+import equipoJugando from '../assets/equipojUgando.jpg';
+import handballHero from '../assets/handball-hero-optimized.webp';
 
 const QuienesSomos = () => {
   const valores = [
@@ -26,22 +31,50 @@ const QuienesSomos = () => {
 
   const entrenadores = [
     {
-      nombre: 'Prof. Carlos Rodríguez',
+      nombre: 'Prof. Santiago Villalva',
       cargo: 'Entrenador Principal',
       especialidad: 'Técnica y táctica',
       experiencia: '15 años de experiencia en handball universitario'
     },
     {
-      nombre: 'Prof. María González',
+      nombre: 'Prof. Octavio Patron',
       cargo: 'Entrenadora Asistente',
       especialidad: 'Preparación física',
       experiencia: 'Especialista en desarrollo atlético juvenil'
     },
     {
-      nombre: 'Prof. Juan Martínez',
+      nombre: 'Prof. Alfonsina Moreno',
       cargo: 'Coordinador Deportivo',
       especialidad: 'Gestión deportiva',
-      experiencia: 'Coordinador de deportes universitarios'
+      experiencia: 'Coordinadora de deportes universitarios'
+    }
+  ];
+
+  const galeriaFotos = [
+    {
+      imagen: handballEquipo2,
+      titulo: 'Equipo Principal',
+      descripcion: 'Nuestro equipo principal en acción durante un partido'
+    },
+    {
+      imagen: handballMini,
+      titulo: 'Categoría Mini',
+      descripcion: 'Los más pequeños del club disfrutando del handball'
+    },
+    {
+      imagen: equipoHandball,
+      titulo: 'Entrenamiento',
+      descripcion: 'Sesión de entrenamiento técnico y táctico'
+    },
+    {
+      imagen: equipoJugando,
+      titulo: 'En Competencia',
+      descripcion: 'Momentos de intensidad en torneos universitarios'
+    },
+    {
+      imagen: handballHero,
+      titulo: 'Espíritu de Equipo',
+      descripcion: 'La pasión y dedicación que nos caracteriza'
     }
   ];
 
@@ -199,17 +232,29 @@ const QuienesSomos = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div key={item} className="bg-gradient-to-br from-azulUnicen to-verdeUnicen rounded-lg p-8 text-white text-center">
-                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold">{item}</span>
+            {galeriaFotos.map((foto, index) => (
+              <div key={index} className="card overflow-hidden group">
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={foto.imagen} 
+                    alt={foto.titulo}
+                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
+                    <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h3 className="text-lg font-semibold mb-2">{foto.titulo}</h3>
+                      <p className="text-sm">{foto.descripcion}</p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Foto del Equipo {item}
-                </h3>
-                <p className="text-sm opacity-90">
-                  Momentos compartidos en entrenamientos y competencias
-                </p>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {foto.titulo}
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {foto.descripcion}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
