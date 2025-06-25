@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import logoHandballUnicen from '../assets/logo handballUnicen.png';
+import logoHandballUnicen from '../assets/logohandballUnicen.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
