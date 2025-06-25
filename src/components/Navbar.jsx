@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import logoHandballUnicen from '../assets/logo handballUnicen.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,9 +31,11 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <div className="w-10 h-10 bg-azulUnicen rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">HU</span>
-              </div>
+              <img 
+                src={logoHandballUnicen} 
+                alt="Handball Unicen Logo" 
+                className="w-12 h-12 object-contain"
+              />
               <span className="ml-3 text-xl font-bold text-azulUnicen">
                 Handball Unicen
               </span>

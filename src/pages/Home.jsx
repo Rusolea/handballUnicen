@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Calendar, Users, Trophy, Newspaper } from 'lucide-react';
+import handballHero from '../assets/handball-hero-optimized.webp';
 
 const Home = () => {
   const quickLinks = [
@@ -36,33 +37,29 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-azulUnicen to-azulOscuroUnicen text-white">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <div className="mx-auto w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8">
-              <span className="text-azulUnicen font-bold text-4xl">HU</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Handball Unicen
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Formando deportistas de excelencia en la Universidad Nacional del Centro
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/quienes-somos"
-                className="btn-primary text-lg px-8 py-3"
-              >
-                Conocenos
-              </Link>
-              <Link
-                to="/noticias"
-                className="bg-white text-azulUnicen hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg"
-              >
-                Ver Noticias
-              </Link>
-            </div>
+      <section
+        className="relative text-white bg-top bg-cover"
+        style={{ backgroundImage: `url(${handballHero})` }}
+      >
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="relative z-10 px-4 py-24 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">Handball Unicen</h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Formando deportistas de excelencia en la Universidad Nacional del Centro
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/quienes-somos"
+              className="btn-primary text-lg px-8 py-3"
+            >
+              Conocenos
+            </Link>
+            <Link
+              to="/noticias"
+              className="bg-white text-azulUnicen hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg"
+            >
+              Ver Noticias
+            </Link>
           </div>
         </div>
       </section>
