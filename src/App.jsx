@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer'; // Importar el Footer
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -29,9 +30,9 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
           <Navbar />
-          <main>
+          <main className="flex-grow">
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 {/* Rutas públicas */}
@@ -70,6 +71,7 @@ function App() {
               </Routes>
             </Suspense>
           </main>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>

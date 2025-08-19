@@ -9,44 +9,54 @@ const QuienesSomos = () => {
   const valores = [
     {
       icon: Target,
-      title: 'Excelencia',
-      description: 'Buscamos la excelencia en cada entrenamiento y competencia'
+      title: 'ACTITUD',
+      // description: 'Buscamos la excelencia en cada entrenamiento y competencia'
     },
     {
       icon: Users,
-      title: 'Trabajo en Equipo',
-      description: 'Valoramos la colaboración y el espíritu de equipo'
+      title: 'AMOR',
+      // description: 'Valoramos la colaboración y el espíritu de equipo'
     },
     {
       icon: Award,
-      title: 'Disciplina',
-      description: 'Mantenemos la disciplina y el compromiso en todo momento'
+      title: 'RESPETO',
+      // description: 'Mantenemos la disciplina y el compromiso en todo momento'
     },
-    {
-      icon: Heart,
-      title: 'Pasión',
-      description: 'Jugamos con pasión y amor por el deporte'
-    }
+    // {
+    //   icon: Heart,
+    //   title: 'Pasión',
+    //   description: 'Jugamos con pasión y amor por el deporte'
+    // }
   ];
 
   const entrenadores = [
     {
       nombre: 'Prof. Santiago Villalva',
-      cargo: 'Entrenador Principal',
-      especialidad: 'Técnica y táctica',
-      experiencia: '15 años de experiencia en handball universitario'
-    },
-    {
-      nombre: 'Prof. Octavio Patron',
-      cargo: 'Entrenadora Asistente',
-      especialidad: 'Preparación física',
-      experiencia: 'Especialista en desarrollo atlético juvenil'
+      roles: ['Coordinador Gral.', 'Profesor', 'Director Técnico']
     },
     {
       nombre: 'Prof. Alfonsina Moreno',
-      cargo: 'Coordinador Deportivo',
-      especialidad: 'Gestión deportiva',
-      experiencia: 'Coordinadora de deportes universitarios'
+      roles: ['Coordinadora Mini-Infantiles', 'Profesora', 'Directora Técnica']
+    },
+    {
+      nombre: 'Prof. Octavio Patron',
+      roles: ['Coordinador', 'Profesor', 'Director Técnico']
+    },
+    {
+      nombre: 'Prof. Juan Jose Gonzalez',
+      roles: ['Profesor', 'Director Técnico']
+    },
+    {
+      nombre: 'Prof. Melina Del Rio',
+      roles: ['Profesora', 'EFI']
+    },
+    {
+      nombre: 'Prof. David Lopez',
+      roles: ['Profesor']
+    },
+    {
+      nombre: 'Prof. Walter Lavin',
+      roles: ['Profesor', 'Director Técnico']
     }
   ];
 
@@ -64,7 +74,7 @@ const QuienesSomos = () => {
     {
       imagen: equipoHandball,
       titulo: 'Entrenamiento',
-      descripcion: 'Sesión de entrenamiento técnico y táctico'
+      // descripcion: 'Sesión de entrenamiento técnico y táctico'
     },
     {
       imagen: equipoJugando,
@@ -94,62 +104,16 @@ const QuienesSomos = () => {
 
       {/* Historia Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Nuestra Historia
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Handball Unicen nació en el año 2010 como una iniciativa de estudiantes 
-                apasionados por el handball que buscaban representar a la Universidad 
-                Nacional del Centro en competencias deportivas.
-              </p>
-              <p className="text-lg text-gray-600 mb-6">
-                Desde nuestros inicios, hemos crecido de manera constante, formando 
-                equipos competitivos que han logrado destacarse en torneos universitarios 
-                regionales y nacionales.
-              </p>
-              <p className="text-lg text-gray-600">
-                Hoy somos una referencia en el handball universitario de la provincia 
-                de Buenos Aires, formando no solo excelentes deportistas, sino también 
-                personas comprometidas con valores como el trabajo en equipo, la disciplina 
-                y la superación personal.
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-azulUnicen to-azulOscuroUnicen rounded-lg p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6">Logros Destacados</h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-2xl font-bold">1</span>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Campeones Regionales 2023</h4>
-                    <p className="text-sm opacity-90">Torneo Universitario Regional</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-2xl font-bold">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Subcampeones Nacionales 2022</h4>
-                    <p className="text-sm opacity-90">Torneo Nacional Universitario</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-2xl font-bold">3</span>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Premio al Fair Play 2021</h4>
-                    <p className="text-sm opacity-90">Reconocimiento deportivo</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Nuestra Historia
+          </h2>
+          <p className="text-lg text-gray-600 mb-6 text-left">
+            La escuela de handball unicen nace en el año 2018 comenzando asi con la formación de chicos y chicas en el Balonmano Formativo dentro de la Universidad del Centro de la Prov. de Bs As. 
+          </p>
+          <p className="text-lg text-gray-600 mb-6 text-left">
+            En ese año se dieron los primeros pasos con grupos de Mini e Infantiles y año a año se fueron sumando mas categorias. Hoy en dia sigue el crecimiento exponencial brindando una formación integral y de calidad a mas de 140 chicos y chicas a partir de los 6 años, formando y compitiendo a nivel local y regional.
+          </p>
         </div>
       </section>
 
@@ -158,14 +122,14 @@ const QuienesSomos = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Nuestros Valores
+            VALORES DE NUESTRA ESCUELA
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Los principios que guían nuestro desarrollo deportivo y personal
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:max-w-4xl mx-auto gap-8">
             {valores.map((valor) => (
               <div key={valor.title} className="card p-6 text-center">
                 <div className="w-16 h-16 bg-azulUnicen rounded-full flex items-center justify-center mx-auto mb-4">
@@ -197,22 +161,20 @@ const QuienesSomos = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {entrenadores.map((entrenador) => (
-              <div key={entrenador.nombre} className="card p-6 text-center">
+              <div key={entrenador.nombre} className="card p-6 text-center flex flex-col items-center">
                 <div className="w-24 h-24 bg-gradient-to-br from-verdeUnicen to-azulUnicen rounded-full flex items-center justify-center mx-auto mb-4">
                   <Users className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {entrenador.nombre}
                 </h3>
-                <p className="text-azulUnicen font-medium mb-2">
-                  {entrenador.cargo}
-                </p>
-                <p className="text-gray-600 mb-2">
-                  <strong>Especialidad:</strong> {entrenador.especialidad}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {entrenador.experiencia}
-                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {entrenador.roles.map((rol, index) => (
+                    <span key={index} className="bg-azulUnicen text-white px-3 py-1 text-xs font-medium rounded-full">
+                      {rol}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

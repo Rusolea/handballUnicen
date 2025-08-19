@@ -4,31 +4,38 @@ const QueHacemos = () => {
   const actividades = [
     {
       icon: Target,
-      title: 'Entrenamientos Regulares',
+      title: 'ENTRENAMIENTOS',
       description: 'Sesiones de entrenamiento técnico, táctico y físico',
       horarios: 'Ver sección por categorías más abajo',
       lugar: 'Múltiples sedes: SUM, Instituto de Ed. Física, CCU y Campus'
     },
     {
       icon: Trophy,
-      title: 'Competencias',
-      description: 'Participación en torneos universitarios y locales',
-      horarios: 'Fines de semana según calendario',
-      lugar: 'Diferentes sedes'
+      title: 'COMPETENCIAS',
+      description: 'Participación en Torneos Locales y Regionales',
+      horarios: 'Fines de semana',
+      lugar: 'Local y Visitante, según fixture'
     },
     {
       icon: Users,
-      title: 'Clínicas Deportivas',
-      description: 'Talleres especializados con entrenadores invitados',
-      horarios: 'Sábados de 10:00 a 12:00',
-      lugar: 'Gimnasio Universitario'
+      title: 'ENCUENTROS MASIVOS',
+      description: 'Encuentros de Categorías Base',
+      horarios: 'Fines de Semana',
+      lugar: 'Multiples Sedes'
     },
     {
       icon: Calendar,
-      title: 'Eventos Sociales',
-      description: 'Actividades de integración y convivencia',
-      horarios: 'Según programación',
+      title: 'CAMPUS INVIERNO',
+      description: 'Campamento de Invierno: Entrenamiento + Charlas + Convivencia',
+      horarios: 'Vacaciones Invierno',
       lugar: 'Campus Universitario'
+    },
+    {
+      icon: Calendar,
+      title: 'SALIDAS A LA NATURALEZA',
+      description: 'Salidas y Actividades complementarias en la Naturaleza',
+      horarios: 'Todo el Año',
+      lugar: 'Tandil'
     }
   ];
 
@@ -85,25 +92,53 @@ const QueHacemos = () => {
 
   const torneos = [
     {
-      nombre: 'Torneo Universitario Regional',
-      fecha: 'Marzo - Mayo 2024',
-      ubicacion: 'Tandil, Buenos Aires',
+      nombre: 'ENCUENTRO MASIVO MINI-INFANTILES',
+      fecha: 'Marzo - NOVIEMBRE 2025',
+      ubicacion: 'Tandil - Rauch - Azul - B. Juarez Buenos Aires',
       estado: 'En curso',
-      descripcion: 'Competencia regional entre universidades'
+      descripcion: 'Encuentros Formativos para Mini e Infantiles'
     },
     {
-      nombre: 'Liga Local de Handball',
-      fecha: 'Abril - Agosto 2024',
-      ubicacion: 'Tandil, Buenos Aires',
-      estado: 'Próximo',
-      descripcion: 'Liga local con equipos de la ciudad'
+      nombre: 'APERTURA FORMATIVAS AS.CEN.BAL',
+      fecha: 'Marzo - Julio 2025',
+      ubicacion: 'Tandil - Rauch - Azul Buenos Aires',
+      estado: 'Finalizado',
+      descripcion: 'Liga As.Cen.Bal'
     },
     {
-      nombre: 'Torneo Nacional Universitario',
-      fecha: 'Septiembre - Noviembre 2024',
-      ubicacion: 'Córdoba, Argentina',
-      estado: 'Planificado',
-      descripcion: 'Competencia nacional universitaria'
+      nombre: 'APERTURA PROMOCIONAL AS.A.BAL',
+      fecha: 'Marzo - Julio 2025',
+      ubicacion: 'Liga Atlantica',
+      estado: 'Finalizado',
+      descripcion: 'Liga As.A.Bal Mayores Femenino y Masculino'
+    },
+    {
+      nombre: 'SUPER 3 FEM Y MASC',
+      fecha: 'Julio 2025',
+      ubicacion: 'Tandil',
+      estado: 'Finalizado',
+      descripcion: 'Liga As.Cen.Bal'
+    },
+    {
+      nombre: 'CLAUSURA FORMATIVAS AS.CEN.BAL',
+      fecha: 'Agosto - Noviembre 2025',
+      ubicacion: 'Tandil - Rauch - Azul Buenos Aires',
+      estado: 'En curso',
+      descripcion: 'Liga As.Cen.Bal'
+    },
+    {
+      nombre: 'APERTURA PROMOCIONAL AS.A.BAL',
+      fecha: 'Agosto - Noviembre 2025',
+      ubicacion: 'Liga Atlantica',
+      estado: 'En curso',
+      descripcion: 'Liga As.A.Bal'
+    },
+    {
+      nombre: 'COPA TANDIL',
+      fecha: 'Octubre 2025',
+      ubicacion: 'Tandil',
+      estado: 'Proximamente',
+      descripcion: 'Copa Tandil Formativas'
     }
   ];
 
@@ -272,7 +307,7 @@ const QueHacemos = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Entrenamiento Técnico</h4>
-                    <p className="text-gray-600">Mejora de habilidades específicas del handball</p>
+                    {/* <p className="text-gray-600">Mejora de habilidades específicas del handball</p> */}
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -281,7 +316,7 @@ const QueHacemos = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Entrenamiento Táctico</h4>
-                    <p className="text-gray-600">Estrategias de juego y posicionamiento</p>
+                    {/* <p className="text-gray-600">Estrategias de juego y posicionamiento</p> */}
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -290,7 +325,7 @@ const QueHacemos = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Preparación Física</h4>
-                    <p className="text-gray-600">Desarrollo de resistencia, fuerza y velocidad</p>
+                    {/* <p className="text-gray-600">Desarrollo de resistencia, fuerza y velocidad</p> */}
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -299,7 +334,7 @@ const QueHacemos = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Formación Integral</h4>
-                    <p className="text-gray-600">Valores deportivos y trabajo en equipo</p>
+                    {/* <p className="text-gray-600">Valores deportivos y trabajo en equipo</p> */}
                   </div>
                 </li>
               </ul>

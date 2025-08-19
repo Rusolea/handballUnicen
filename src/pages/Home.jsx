@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Trophy, Newspaper } from 'lucide-react';
+import { Calendar, Users, Trophy, Newspaper, X } from 'lucide-react';
 import handballHero from '../assets/handball-hero-optimized.webp';
 
 const Home = () => {
+  const [showNotification, setShowNotification] = useState(false);
+
   const quickLinks = [
     {
       title: 'Próximos Partidos',
@@ -34,8 +37,30 @@ const Home = () => {
     }
   ];
 
+  const handleComingSoon = (e) => {
+    e.preventDefault();
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000); // La notificación se oculta después de 3 segundos
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      {/* Notificación "Próximamente" */}
+      {showNotification && (
+        <div className="fixed top-5 left-1/2 -translate-x-1/2 w-11/12 max-w-sm md:w-auto md:right-5 md:left-auto md:-translate-x-0 bg-azulUnicen text-white p-4 rounded-lg shadow-lg z-50 flex items-start animate-fade-in-down">
+          <Trophy className="w-8 h-8 mr-4 flex-shrink-0" />
+          <div className="flex-grow">
+            <h4 className="font-bold text-lg">¡Próximamente!</h4>
+            <p>Estamos trabajando en la nueva sección de noticias para mantenerte al día con el club.</p>
+          </div>
+          <button onClick={() => setShowNotification(false)} className="ml-4">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section
         className="relative text-white bg-top bg-cover"
@@ -43,9 +68,10 @@ const Home = () => {
       >
         <div className="absolute inset-0 bg-black opacity-40"></div>
         <div className="relative z-10 px-4 py-24 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">Handball Unicen</h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">ESCUELA DE HANDBALL UNICEN</h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Formando deportistas de excelencia en la Universidad Nacional del Centro
+          FORMANDO DEPORTISTAS INTEGRALES EN LA UNIVERSIDAD DEL CENTRO
+
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -54,12 +80,12 @@ const Home = () => {
             >
               Conocenos
             </Link>
-            <Link
-              to="/noticias"
+            <button
+              onClick={handleComingSoon}
               className="bg-white text-azulUnicen hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg"
             >
               Ver Noticias
-            </Link>
+            </button>
           </div>
         </div>
       </section>
@@ -78,9 +104,10 @@ const Home = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickLinks.map((link) => (
-              <Link
+              <a
                 key={link.title}
-                to={link.href}
+                href={link.href}
+                onClick={link.href === '/noticias' ? handleComingSoon : undefined}
                 className="card p-6 text-center hover:transform hover:scale-105 transition-transform duration-200"
               >
                 <div className={`w-16 h-16 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
@@ -92,7 +119,7 @@ const Home = () => {
                 <p className="text-gray-600">
                   {link.description}
                 </p>
-              </Link>
+              </a>
             ))}
           </div>
         </div>
