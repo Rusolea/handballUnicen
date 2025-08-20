@@ -103,24 +103,32 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickLinks.map((link) => (
-              <a
-                key={link.title}
-                href={link.href}
-                onClick={link.href === '/noticias' ? handleComingSoon : undefined}
-                className="card p-6 text-center hover:transform hover:scale-105 transition-transform duration-200"
-              >
-                <div className={`w-16 h-16 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <link.icon className="w-8 h-8 text-white" />
+            {quickLinks.map((link) => {
+              const isComingSoon = link.href === '/noticias';
+              const CardContent = (
+                <div className="card p-6 text-center hover:transform hover:scale-105 transition-transform duration-200 h-full flex flex-col justify-center">
+                  <div className={`w-16 h-16 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <link.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {link.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {isComingSoon ? <span className="font-semibold text-azulUnicen">Próximamente</span> : link.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {link.title}
-                </h3>
-                <p className="text-gray-600">
-                  {link.description}
-                </p>
-              </a>
-            ))}
+              );
+
+              return isComingSoon ? (
+                <div key={link.title} onClick={handleComingSoon} className="cursor-pointer">
+                  {CardContent}
+                </div>
+              ) : (
+                <Link key={link.title} to={link.href}>
+                  {CardContent}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
