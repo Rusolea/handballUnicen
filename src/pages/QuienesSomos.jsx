@@ -31,28 +31,28 @@ const QuienesSomos = () => {
 
   const entrenadores = [
     {
-      nombre: 'Prof. Santiago Villalva',
-      roles: ['Coordinador Gral.', 'Profesor', 'Director Técnico']
+      nombre: 'Prof. Santiago Villalba',
+      roles: ['Coordinador Deportivo Gral.', 'Profesor', 'Director Técnico']
     },
     {
       nombre: 'Prof. Alfonsina Moreno',
-      roles: ['Coordinadora Mini-Infantiles', 'Profesora', 'Directora Técnica']
+      roles: ['Coordinadora Deportiva Base', 'Profesora', 'Directora Técnica']
     },
     {
       nombre: 'Prof. Octavio Patron',
-      roles: ['Coordinador', 'Profesor', 'Director Técnico']
+      roles: ['Coordinador Deportivo', 'Profesor', 'Director Técnico/Asistente Técnico']
     },
     {
       nombre: 'Prof. Juan Jose Gonzalez',
-      roles: ['Profesor', 'Director Técnico']
+      roles: ['Profesor', 'Director Técnico/Asistente Tecnico']
     },
     {
       nombre: 'Prof. Melina Del Rio',
-      roles: ['Profesora', 'EFI']
+      roles: ['Profesora', 'EFI/Asistente Técnica']
     },
     {
-      nombre: 'Prof. David Lopez',
-      roles: ['Profesor']
+      nombre: 'David Lopez',
+      roles: ['Profesor', 'Asistente Técnico']
     },
     {
       nombre: 'Prof. Walter Lavin',
