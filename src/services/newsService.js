@@ -1,41 +1,56 @@
-import { db, storage } from './firebase';
+import { db } from './firebase'; // Mantenemos Firestore
+import { supabase } from './supabase'; // <-- Importamos Supabase
 import { collection, addDoc, serverTimestamp, getDocs, query, where, orderBy, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const NEWS_COLLECTION = 'noticias';
 
-// --- Funciones de Storage ---
+// --- Funciones de Storage (AHORA CON SUPABASE) ---
 
 /**
- * Sube una imagen a Firebase Storage.
+ * Sube una imagen a Supabase Storage.
  * @param {File} file El archivo de imagen a subir.
- * @returns {Promise<string|null>} La URL de descarga de la imagen o null si no hay archivo.
+ * @returns {Promise<string|null>} La URL pública de la imagen o null si hay un error.
  */
 export const uploadImage = async (file) => {
   if (!file) return null;
-  
-  const storageRef = ref(storage, `${NEWS_COLLECTION}/${Date.now()}_${file.name}`);
-  const snapshot = await uploadBytes(storageRef, file);
-  return getDownloadURL(snapshot.ref);
+
+  try {
+    const fileName = `${Date.now()}_${file.name}`;
+    const bucketName = 'imagenes-noticias'; // Asegúrate de que este sea el nombre de tu bucket
+
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .upload(fileName, file);
+
+    if (error) throw error;
+
+    const { data: publicUrlData } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(fileName);
+
+    return publicUrlData.publicUrl;
+  } catch (error) {
+    console.error('Error al subir la imagen a Supabase:', error);
+    return null;
+  }
 };
 
 /**
- * Elimina una imagen de Firebase Storage a partir de su URL.
+ * Elimina una imagen de Supabase Storage a partir de su URL.
  * @param {string} imageUrl La URL de la imagen a eliminar.
- * @returns {Promise<void>}
  */
 export const deleteImage = async (imageUrl) => {
   if (!imageUrl) return;
+
   try {
-    const imageRef = ref(storage, imageUrl);
-    await deleteObject(imageRef);
-  } catch (error) {
-    // Si la imagen no existe, Firebase lanza un error 'storage/object-not-found'.
-    // Podemos ignorarlo de forma segura si no nos importa que el archivo ya no exista.
-    if (error.code !== 'storage/object-not-found') {
-      console.error("Error al eliminar la imagen de Storage:", error);
-      throw error; // Volver a lanzar errores que no sean "no encontrado"
+    const bucketName = 'imagenes-noticias';
+    const fileName = imageUrl.split('/').pop(); // Extrae el nombre del archivo de la URL
+
+    if (fileName) {
+      await supabase.storage.from(bucketName).remove([fileName]);
     }
+  } catch (error) {
+    console.error('Error al eliminar la imagen de Supabase:', error);
   }
 };
 
