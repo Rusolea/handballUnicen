@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // <-- Importar Link
 import { getPublishedNews } from '../services/newsService';
-import { Calendar, Users, Trophy, Clock } from 'lucide-react';
+import { Calendar, Users, Trophy, Clock, ArrowRight } from 'lucide-react'; // <-- Importar ArrowRight
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState([]);
@@ -50,15 +51,13 @@ const Noticias = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-rojoUnicen to-azulUnicen text-white py-20">
+      <section className="bg-gradient-to-br from-azulUnicen to-azulOscuroUnicen text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Noticias y Partidos
-          </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto">
-            Mantente al día con las últimas novedades y resultados del equipo
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Noticias y Partidos</h1>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+            Toda la actualidad de la Escuela de Handball Unicen. ¡Sigue de cerca a nuestros equipos!
           </p>
         </div>
       </section>
@@ -79,72 +78,68 @@ const Noticias = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {noticias.map((noticia) => (
-                <div key={noticia.id} className="card overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                <div key={noticia.id} className="card flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   {/* Imagen */}
-                  <div className="h-48 bg-gradient-to-br from-azulUnicen to-verdeUnicen flex items-center justify-center">
+                  <div className="h-52 bg-gray-200 flex items-center justify-center">
                     {noticia.imagenUrl ? (
                       <img 
                         src={noticia.imagenUrl} 
                         alt={noticia.titulo}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                     ) : (
-                      <div className="text-white text-center">
+                      <div className="text-gray-400 text-center">
                         <Trophy className="w-12 h-12 mx-auto mb-2" />
-                        <p className="text-sm">Sin imagen</p>
+                        <p className="text-sm">Handball Unicen</p>
                       </div>
                     )}
                   </div>
                   
                   {/* Contenido */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
+                      <div className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-1.5" />
                         {formatDate(noticia.fecha)}
                       </div>
                       {noticia.categoria && (
-                        <span className="px-2 py-1 bg-azulUnicen text-white text-xs rounded-full">
+                        <span className="px-2.5 py-1 bg-celesteUnicen text-white text-xs font-semibold rounded-full uppercase tracking-wider">
                           {noticia.categoria}
                         </span>
                       )}
                     </div>
                     
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 flex-grow">
                       {noticia.titulo}
                     </h3>
                     
                     {noticia.rival && (
-                      <div className="flex items-center mb-3">
-                        <Users className="w-4 h-4 text-gray-500 mr-2" />
-                        <span className="text-sm text-gray-600">
-                          vs {noticia.rival}
-                        </span>
+                      <div className="flex items-center text-gray-600 mb-3">
+                        <Users className="w-4 h-4 mr-2" />
+                        <span>vs {noticia.rival}</span>
                       </div>
                     )}
                     
                     {noticia.resultado && (
-                      <div className="mb-3">
-                        <span className={`font-semibold ${getResultadoColor(noticia.resultado)}`}>
+                      <div className="mb-4">
+                        <span className={`font-bold text-lg ${getResultadoColor(noticia.resultado)}`}>
                           {noticia.resultado}
                         </span>
                       </div>
                     )}
                     
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-gray-700 mb-4 line-clamp-3">
                       {noticia.resumen}
                     </p>
                     
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Clock className="w-4 h-4 mr-1" />
-                        {noticia.fecha && formatDate(noticia.fecha)}
-                      </div>
-                      <button className="text-azulUnicen hover:text-azulOscuroUnicen font-medium text-sm transition-colors duration-200">
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <Link to={`/noticias/${noticia.id}`} className="text-azulUnicen hover:text-azulOscuroUnicen font-semibold text-sm inline-flex items-center transition-colors duration-200">
                         Leer más
-                      </button>
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </Link>
                     </div>
                   </div>
                 </div>
