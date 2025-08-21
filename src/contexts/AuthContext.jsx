@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { auth } from '../firebase/config';
+import { auth } from '../services/firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { ensureUserProfile } from '../services/userService'; // <-- Importar
 
 const AuthContext = createContext();
 
@@ -13,7 +14,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // <-- Ahora guardará el perfil completo
   const [loading, setLoading] = useState(true);
 
   const login = (email, password) => {
@@ -25,8 +26,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // Usuario ha iniciado sesión
+        const userProfile = await ensureUserProfile(user); // <-- Asegurar perfil
+        setCurrentUser(userProfile);
+      } else {
+        // Usuario ha cerrado sesión
+        setCurrentUser(null);
+      }
       setLoading(false);
     });
 

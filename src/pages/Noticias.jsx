@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { getPublishedNews } from '../services/newsService';
 import { Calendar, Users, Trophy, Clock } from 'lucide-react';
 
 const Noticias = () => {
@@ -10,12 +9,7 @@ const Noticias = () => {
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const q = query(collection(db, 'noticias'), orderBy('fecha', 'desc'));
-        const querySnapshot = await getDocs(q);
-        const noticiasData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const noticiasData = await getPublishedNews(); // <-- Usando el servicio
         setNoticias(noticiasData);
       } catch (error) {
         console.error('Error fetching noticias:', error);

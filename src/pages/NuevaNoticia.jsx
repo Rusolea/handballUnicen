@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../firebase/config';
-import { ArrowLeft, Upload, Plus, X } from 'lucide-react';
+import { createNews, uploadImage } from '../services/newsService';
+import { ArrowLeft, Upload, Plus, X, Save, Send } from 'lucide-react';
 
 const NuevaNoticia = () => {
   const navigate = useNavigate();
@@ -15,7 +13,8 @@ const NuevaNoticia = () => {
     rival: '',
     resultado: '',
     categoria: '',
-    fecha: new Date().toISOString().split('T')[0]
+    fecha: new Date().toISOString().split('T')[0],
+    status: 'draft', // Valor por defecto
   });
   const [imagen, setImagen] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
@@ -54,34 +53,24 @@ const NuevaNoticia = () => {
     setImagenPreview(null);
   };
 
-  const uploadImagen = async (file) => {
-    if (!file) return null;
-    
-    const storageRef = ref(storage, `noticias/${Date.now()}_${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    return await getDownloadURL(snapshot.ref);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (statusToSet) => {
     setLoading(true);
     setError('');
 
     try {
       let imagenUrl = null;
       if (imagen) {
-        imagenUrl = await uploadImagen(imagen);
+        imagenUrl = await uploadImage(imagen); // <-- Usando el servicio
       }
 
       const noticiaData = {
         ...formData,
+        status: statusToSet,
         imagenUrl,
         fecha: new Date(formData.fecha),
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
       };
 
-      await addDoc(collection(db, 'noticias'), noticiaData);
+      await createNews(noticiaData); // <-- Usando el servicio
       navigate('/admin/dashboard');
     } catch (error) {
       console.error('Error creating noticia:', error);
@@ -119,7 +108,7 @@ const NuevaNoticia = () => {
             </h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={(e) => e.preventDefault()} className="p-6 space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                 {error}
@@ -227,6 +216,37 @@ const NuevaNoticia = () => {
               />
             </div>
 
+            {/* Estado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Estado
+              </label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="draft"
+                    checked={formData.status === 'draft'}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-azulUnicen border-gray-300 focus:ring-azulUnicen"
+                  />
+                  <span className="ml-2 text-gray-700">Borrador</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="published"
+                    checked={formData.status === 'published'}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-azulUnicen border-gray-300 focus:ring-azulUnicen"
+                  />
+                  <span className="ml-2 text-gray-700">Publicado</span>
+                </label>
+              </div>
+            </div>
+
             {/* Imagen */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -286,18 +306,22 @@ const NuevaNoticia = () => {
                 Cancelar
               </button>
               <button
-                type="submit"
+                type="button"
+                onClick={() => handleSubmit('draft')}
                 disabled={loading}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-secondary inline-flex items-center disabled:opacity-50"
               >
-                {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Creando...
-                  </div>
-                ) : (
-                  'Crear Noticia'
-                )}
+                <Save className="w-4 h-4 mr-2" />
+                Guardar Borrador
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSubmit('published')}
+                disabled={loading}
+                className="btn-primary inline-flex items-center disabled:opacity-50"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                {loading ? 'Publicando...' : 'Publicar'}
               </button>
             </div>
           </form>

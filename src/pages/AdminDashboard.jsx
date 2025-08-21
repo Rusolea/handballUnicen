@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { getAllNewsAdmin, deleteNews } from '../services/newsService';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   Plus, 
@@ -20,24 +19,34 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const { currentUser, logout } = useAuth();
 
-  useEffect(() => {
-    const fetchNoticias = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'noticias'));
-        const noticiasData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setNoticias(noticiasData);
-      } catch (error) {
-        console.error('Error fetching noticias:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchNoticias = async () => {
+    setLoading(true);
+    try {
+      const noticiasData = await getAllNewsAdmin();
+      setNoticias(noticiasData);
+    } catch (error) {
+      console.error('Error fetching noticias:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchNoticias();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta noticia?')) {
+      try {
+        await deleteNews(id);
+        // Actualizar la lista de noticias después de eliminar
+        fetchNoticias(); 
+      } catch (error) {
+        console.error('Error al eliminar la noticia:', error);
+        alert('Hubo un error al eliminar la noticia.');
+      }
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -227,12 +236,15 @@ const AdminDashboard = () => {
                       Categoría
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Estado
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Acciones
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {noticias.slice(0, 5).map((noticia) => (
+                  {noticias.map((noticia) => (
                     <tr key={noticia.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
@@ -252,6 +264,15 @@ const AdminDashboard = () => {
                           </span>
                         )}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          noticia.status === 'published' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {noticia.status === 'published' ? 'Publicado' : 'Borrador'}
+                        </span>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <Link
@@ -261,11 +282,8 @@ const AdminDashboard = () => {
                             <Edit className="w-4 h-4" />
                           </Link>
                           <button
+                            onClick={() => handleDelete(noticia.id)}
                             className="text-red-600 hover:text-red-800"
-                            onClick={() => {
-                              // Implementar eliminación
-                              console.log('Eliminar noticia:', noticia.id);
-                            }}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

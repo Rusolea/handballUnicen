@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, storage } from '../firebase/config';
+import { getNewsById, updateNews, deleteNews, uploadImage } from '../services/newsService';
 import { ArrowLeft, Upload, Plus, X, Trash2 } from 'lucide-react';
 
 const EditarNoticia = () => {
@@ -18,7 +16,8 @@ const EditarNoticia = () => {
     rival: '',
     resultado: '',
     categoria: '',
-    fecha: ''
+    fecha: '',
+    status: 'draft', // Valor inicial por defecto
   });
   const [imagen, setImagen] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
@@ -36,11 +35,8 @@ const EditarNoticia = () => {
   useEffect(() => {
     const fetchNoticia = async () => {
       try {
-        const docRef = doc(db, 'noticias', id);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          const data = docSnap.data();
+        const data = await getNewsById(id); // <-- Usando el servicio
+        if (data) {
           setNoticia(data);
           setFormData({
             titulo: data.titulo || '',
@@ -48,7 +44,8 @@ const EditarNoticia = () => {
             rival: data.rival || '',
             resultado: data.resultado || '',
             categoria: data.categoria || '',
-            fecha: data.fecha ? data.fecha.toDate().toISOString().split('T')[0] : ''
+            fecha: data.fecha ? data.fecha.toDate().toISOString().split('T')[0] : '',
+            status: data.status || 'draft',
           });
           if (data.imagenUrl) {
             setImagenPreview(data.imagenUrl);
@@ -92,14 +89,6 @@ const EditarNoticia = () => {
     setImagenPreview(null);
   };
 
-  const uploadImagen = async (file) => {
-    if (!file) return null;
-    
-    const storageRef = ref(storage, `noticias/${Date.now()}_${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    return await getDownloadURL(snapshot.ref);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -108,18 +97,18 @@ const EditarNoticia = () => {
     try {
       let imagenUrl = noticia?.imagenUrl || null;
       if (imagen) {
-        imagenUrl = await uploadImagen(imagen);
+        // Nota: Si se sube una imagen nueva, la antigua no se borra automáticamente
+        // hasta que se guarde. Una mejora futura podría ser borrarla antes.
+        imagenUrl = await uploadImage(imagen); // <-- Usando el servicio
       }
 
       const noticiaData = {
         ...formData,
         imagenUrl,
         fecha: new Date(formData.fecha),
-        updatedAt: new Date()
       };
 
-      const docRef = doc(db, 'noticias', id);
-      await updateDoc(docRef, noticiaData);
+      await updateNews(id, noticiaData); // <-- Usando el servicio
       navigate('/admin/dashboard');
     } catch (error) {
       console.error('Error updating noticia:', error);
@@ -132,21 +121,7 @@ const EditarNoticia = () => {
   const handleDelete = async () => {
     try {
       setSaving(true);
-      
-      // Eliminar imagen del storage si existe
-      if (noticia?.imagenUrl) {
-        try {
-          const imageRef = ref(storage, noticia.imagenUrl);
-          await deleteObject(imageRef);
-        } catch (error) {
-          console.error('Error deleting image:', error);
-        }
-      }
-
-      // Eliminar documento de Firestore
-      const docRef = doc(db, 'noticias', id);
-      await deleteDoc(docRef);
-      
+      await deleteNews(id); // <-- Usando el servicio
       navigate('/admin/dashboard');
     } catch (error) {
       console.error('Error deleting noticia:', error);
@@ -325,6 +300,37 @@ const EditarNoticia = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-azulUnicen focus:border-transparent"
                 placeholder="Ej: Victoria 25-20"
               />
+            </div>
+
+            {/* Estado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Estado
+              </label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="draft"
+                    checked={formData.status === 'draft'}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-azulUnicen border-gray-300 focus:ring-azulUnicen"
+                  />
+                  <span className="ml-2 text-gray-700">Borrador</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="published"
+                    checked={formData.status === 'published'}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-azulUnicen border-gray-300 focus:ring-azulUnicen"
+                  />
+                  <span className="ml-2 text-gray-700">Publicado</span>
+                </label>
+              </div>
             </div>
 
             {/* Imagen */}
