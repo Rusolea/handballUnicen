@@ -7,7 +7,7 @@ const NEWS_COLLECTION = 'noticias';
 // --- Funciones de Storage (AHORA CON SUPABASE) ---
 
 /**
- * Sube una imagen a Supabase Storage.
+ * Sube una imagen a Supabase Storage, sanitizando el nombre del archivo primero.
  * @param {File} file El archivo de imagen a subir.
  * @returns {Promise<string|null>} La URL pública de la imagen o null si hay un error.
  */
@@ -15,22 +15,46 @@ export const uploadImage = async (file) => {
   if (!file) return null;
 
   try {
-    const fileName = `${Date.now()}_${file.name}`;
-    const bucketName = 'imagenes-noticias'; // Asegúrate de que este sea el nombre de tu bucket
+    // --- LÓGICA DE LIMPIEZA DEL NOMBRE DEL ARCHIVO ---
+    
+    // 1. Separa el nombre base de la extensión (ej. "mi-foto" y "png")
+    const fileExt = file.name.split('.').pop();
+    const fileNameBase = file.name.split('.').slice(0, -1).join('.');
 
+    // 2. Limpia el nombre base:
+    const sanitizedFileNameBase = fileNameBase
+      .toLowerCase() // Pone todo en minúsculas
+      .replace(/\s+/g, '_') // Reemplaza espacios con guiones bajos
+      .replace(/[^\w-]/g, ''); // Elimina TODOS los caracteres que no sean letras, números, guiones bajos o guiones medios
+
+    // 3. Crea el nuevo nombre de archivo final, único y seguro
+    const fileName = `${Date.now()}_${sanitizedFileNameBase}.${fileExt}`;
+    
+    // --------------------------------------------------
+
+    const bucketName = 'imagenes-noticias';
+
+    // Sube el archivo con el nuevo nombre limpio
     const { data, error } = await supabase.storage
       .from(bucketName)
       .upload(fileName, file);
 
-    if (error) throw error;
+    if (error) {
+      // Si hay un error en la subida, lo lanzamos para que se capture en el bloque catch.
+      throw error;
+    }
 
+    // Obtiene la URL pública del archivo recién subido
     const { data: publicUrlData } = supabase.storage
       .from(bucketName)
       .getPublicUrl(fileName);
 
     return publicUrlData.publicUrl;
+
   } catch (error) {
     console.error('Error al subir la imagen a Supabase:', error);
+    // Es muy importante que el error se muestre en la consola para depurar.
+    // La línea anterior ya lo hace.
     return null;
   }
 };

@@ -11,6 +11,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    strictPort: true, // Falla si el puerto está en uso
     host: true
   }
 })
