@@ -1,11 +1,8 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Trophy, Newspaper, X } from 'lucide-react';
+import { Calendar, Users, Trophy, Newspaper } from 'lucide-react';
 import handballHero from '../assets/handball-hero-optimized.webp';
 
 const Home = () => {
-  const [showNotification, setShowNotification] = useState(false);
-
   const quickLinks = [
     {
       title: 'Próximos Partidos',
@@ -37,30 +34,8 @@ const Home = () => {
     }
   ];
 
-  const handleComingSoon = (e) => {
-    e.preventDefault();
-    setShowNotification(true);
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000); // La notificación se oculta después de 3 segundos
-  };
-
   return (
     <div className="min-h-screen relative">
-      {/* Notificación "Próximamente" */}
-      {showNotification && (
-        <div className="fixed top-5 left-1/2 -translate-x-1/2 w-11/12 max-w-sm md:w-auto md:right-5 md:left-auto md:-translate-x-0 bg-azulUnicen text-white p-4 rounded-lg shadow-lg z-50 flex items-start animate-fade-in-down">
-          <Trophy className="w-8 h-8 mr-4 flex-shrink-0" />
-          <div className="flex-grow">
-            <h4 className="font-bold text-lg">¡Próximamente!</h4>
-            <p>Estamos trabajando en la nueva sección de noticias para mantenerte al día con el club.</p>
-          </div>
-          <button onClick={() => setShowNotification(false)} className="ml-4">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-      )}
-
       {/* Hero Section */}
       <section
         className="relative text-white bg-top bg-cover"
@@ -80,12 +55,12 @@ const Home = () => {
             >
               Conocenos
             </Link>
-            <button
-              onClick={handleComingSoon}
+            <Link
+              to="/noticias"
               className="bg-white text-azulUnicen hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg"
             >
               Ver Noticias
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -103,32 +78,23 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickLinks.map((link) => {
-              const isComingSoon = link.href === '/noticias';
-              const CardContent = (
-                <div className="card p-6 text-center hover:transform hover:scale-105 transition-transform duration-200 h-full flex flex-col justify-center">
-                  <div className={`w-16 h-16 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <link.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {link.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {isComingSoon ? <span className="font-semibold text-azulUnicen">Próximamente</span> : link.description}
-                  </p>
+            {quickLinks.map((link) => (
+              <Link
+                key={link.title}
+                to={link.href}
+                className="card p-6 text-center hover:transform hover:scale-105 transition-transform duration-200 h-full flex flex-col justify-center"
+              >
+                <div className={`w-16 h-16 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                  <link.icon className="w-8 h-8 text-white" />
                 </div>
-              );
-
-              return isComingSoon ? (
-                <div key={link.title} onClick={handleComingSoon} className="cursor-pointer">
-                  {CardContent}
-                </div>
-              ) : (
-                <Link key={link.title} to={link.href}>
-                  {CardContent}
-                </Link>
-              );
-            })}
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {link.title}
+                </h3>
+                <p className="text-gray-600">
+                  {link.description}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
