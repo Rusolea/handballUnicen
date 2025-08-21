@@ -3,6 +3,7 @@
 import { db } from './firebase'; // Firestore para los datos de las noticias
 import { createClient } from '@supabase/supabase-js'; // Importamos el creador de clientes
 import { collection, addDoc, serverTimestamp, getDocs, query, where, orderBy, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import imageCompression from 'browser-image-compression'; // <-- ¡IMPORTA LA LIBRERÍA!
 
 const NEWS_COLLECTION = 'noticias';
 
@@ -25,28 +26,41 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 export const uploadImage = async (file) => {
   if (!file) return null;
 
+  // --- COMPRESIÓN DE LA IMAGEN ANTES DE SUBIR ---
+  const options = {
+    maxSizeMB: 1,          // Tamaño máximo del archivo en MB
+    maxWidthOrHeight: 1920, // Redimensiona si es más grande
+    useWebWorker: true,    // Usa un worker para no congelar la UI
+    fileType: 'image/webp' // ¡Convierte a WebP!
+  };
+
   try {
-    const fileExt = file.name.split('.').pop();
-    const fileNameBase = file.name.split('.').slice(0, -1).join('.');
+    console.log(`Tamaño original: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+    
+    const compressedFile = await imageCompression(file, options);
+    
+    console.log(`Tamaño comprimido: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+    
+    const fileExt = 'webp'; // Forzamos la extensión a webp
+    const fileNameBase = compressedFile.name.split('.').slice(0, -1).join('.');
     const sanitizedFileNameBase = fileNameBase.toLowerCase().replace(/\s+/g, '_').replace(/[^\w-]/g, '');
     const fileName = `${Date.now()}_${sanitizedFileNameBase}.${fileExt}`;
     const bucketName = 'imagenes-noticias';
 
-    // Usamos el cliente de ADMIN para subir la imagen
     const { error } = await supabaseAdmin.storage
-      .from(bucketName)
-      .upload(fileName, file);
-
+        .from(bucketName)
+        .upload(fileName, compressedFile); // <-- ¡Subimos el archivo comprimido!
+    
     if (error) throw error;
-
-    // Usamos el cliente PÚBLICO para obtener la URL
+    
     const { data: publicUrlData } = supabase.storage
       .from(bucketName)
       .getPublicUrl(fileName);
 
     return publicUrlData.publicUrl;
+
   } catch (error) {
-    console.error('Error al subir la imagen a Supabase:', error);
+    console.error('Error durante la compresión o subida de la imagen:', error);
     return null;
   }
 };
