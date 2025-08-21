@@ -94,7 +94,7 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-azulUnicen rounded-lg flex items-center justify-center mr-4">
@@ -103,42 +103,6 @@ const AdminDashboard = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Noticias</p>
                 <p className="text-2xl font-bold text-gray-900">{noticias.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-verdeUnicen rounded-lg flex items-center justify-center mr-4">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">Jugadores</p>
-                <p className="text-2xl font-bold text-gray-900">25</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-limaUnicen rounded-lg flex items-center justify-center mr-4">
-                <Trophy className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">Partidos</p>
-                <p className="text-2xl font-bold text-gray-900">15</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-celesteUnicen rounded-lg flex items-center justify-center mr-4">
-                <Calendar className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">Este Mes</p>
-                <p className="text-2xl font-bold text-gray-900">8</p>
               </div>
             </div>
           </div>
