@@ -21,7 +21,7 @@ const AdminLogin = () => {
       // La función login ahora nos devuelve el perfil completo del usuario
       const userProfile = await login(email, password);
       
-      console.log('✅ [AdminLogin] Login exitoso, perfil obtenido:', userProfile);
+      // console.log('✅ [AdminLogin] Login exitoso, perfil obtenido:', userProfile);
 
       // Verificamos el rol ANTES de navegar
       if (userProfile && userProfile.role === 'admin') {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, Award, Target } from 'lucide-react';
+import { Users, Award, Target, User } from 'lucide-react'; // Importar el ícono User
 import { getPaginaQuienesSomos, getEntrenadores, getGaleria } from '../services/quienesSomosService';
 import { TailSpin } from 'react-loader-spinner';
 import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
@@ -129,11 +129,17 @@ const QuienesSomos = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {entrenadores.map((entrenador) => (
               <div key={entrenador.id} className="card p-6 text-center flex flex-col items-center">
-                <img 
-                  src={entrenador.imagenUrl || 'https://via.placeholder.com/150'} 
-                  alt={entrenador.nombre}
-                  className="w-24 h-24 bg-gray-200 rounded-full object-cover mx-auto mb-4"
-                />
+                {entrenador.imagenUrl ? (
+                  <img 
+                    src={entrenador.imagenUrl} 
+                    alt={entrenador.nombre}
+                    className="w-24 h-24 bg-gray-200 rounded-full object-cover mx-auto mb-4"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <User className="w-12 h-12 text-gray-400" />
+                  </div>
+                )}
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {entrenador.nombre}
                 </h3>

@@ -7,7 +7,7 @@ import logoHandballUnicen from '../assets/logohandballUnicen.png';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { currentUser, logout } = useAuth();
-  console.log('➡️ [Navbar] Renderizando. El valor de currentUser es:', currentUser);
+  // console.log('➡️ [Navbar] Renderizando. El valor de currentUser es:', currentUser);
   const location = useLocation();
 
   const navigation = [
