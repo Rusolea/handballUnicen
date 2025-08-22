@@ -72,6 +72,7 @@ const AdminDashboard = () => {
       const result = await seedFunction();
       setSeedingMessage(result.message);
     } catch (error) {
+      console.error(`Error seeding data for ${pageName}:`, error);
       setSeedingMessage(`Ocurrió un error inesperado al cargar los datos de ${pageName}.`);
     } finally {
       setIsSeeding(false);
