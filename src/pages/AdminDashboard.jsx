@@ -17,20 +17,15 @@ import {
   ClipboardList, // <--- Añadir ícono
   Trophy as TrophyIcon, // <--- Renombrar para evitar conflictos
   Users as UsersIcon,
-  Sparkles,
   Heart,
   Home as HomeIcon, // <-- Importar y renombrar
   Link as LinkIcon // <-- Importar y renombrar
 } from 'lucide-react';
-import { seedQueHacemosData } from '../services/queHacemosService';
-import { seedHomeData } from '../services/homeService'; // <-- Importar función de seed del Home
 
 const AdminDashboard = () => {
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser, logout } = useAuth();
-  const [seedingMessage, setSeedingMessage] = useState('');
-  const [isSeeding, setIsSeeding] = useState(false);
 
   const fetchNoticias = async () => {
     setLoading(true);
@@ -58,24 +53,6 @@ const AdminDashboard = () => {
         console.error('Error al eliminar la noticia:', error);
         alert('Hubo un error al eliminar la noticia.');
       }
-    }
-  };
-
-  const handleSeedData = async (seedFunction) => {
-    const pageName = seedFunction.name.includes('QueHacemos') ? 'Qué Hacemos' : 'Home';
-    if (!window.confirm(`¿Estás seguro de que quieres cargar los datos iniciales para la página "${pageName}"? Esto no sobreescribirá datos existentes.`)) {
-      return;
-    }
-    setIsSeeding(true);
-    setSeedingMessage('');
-    try {
-      const result = await seedFunction();
-      setSeedingMessage(result.message);
-    } catch (error) {
-      console.error(`Error seeding data for ${pageName}:`, error);
-      setSeedingMessage(`Ocurrió un error inesperado al cargar los datos de ${pageName}.`);
-    } finally {
-      setIsSeeding(false);
     }
   };
 
@@ -285,21 +262,6 @@ const AdminDashboard = () => {
                 </div>
               </Link>
             </div>
-            <div className="mt-6 border-t pt-4 text-center">
-              <button
-                onClick={() => handleSeedData(seedQueHacemosData)}
-                disabled={isSeeding}
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                {isSeeding ? 'Cargando...' : 'Cargar Datos (Qué Hacemos)'}
-              </button>
-              {seedingMessage && (
-                <p className={`mt-2 text-sm ${seedingMessage.includes('Error') || seedingMessage.includes('inesperado') ? 'text-red-600' : 'text-gray-600'}`}>
-                  {seedingMessage}
-                </p>
-              )}
-            </div>
           </div>
         </div>
 
@@ -334,16 +296,6 @@ const AdminDashboard = () => {
                             <p className="text-sm text-gray-600">Editar títulos y párrafos</p>
                         </div>
                     </Link>
-                </div>
-                 <div className="mt-6 border-t pt-4 text-center">
-                    <button
-                        onClick={() => handleSeedData(seedHomeData)}
-                        disabled={isSeeding}
-                        className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
-                    >
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        {isSeeding ? 'Cargando...' : 'Cargar Datos Iniciales (Home)'}
-                    </button>
                 </div>
             </div>
         </div>
