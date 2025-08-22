@@ -1,23 +1,26 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { getSponsors } from '../services/sponsorsService';
 import logoHandballUnicen from '../assets/logohandballUnicen.png';
-import logoAbraham from '../assets/sponsor/1000036496-removebg-preview.png';
-import logoVenko from '../assets/sponsor/1000036719-removebg-preview.png';
-import logoQuesosMoreno from '../assets/sponsor/images (4).png';
-import logoBeertan from '../assets/sponsor/image004.jpg';
-import logoHummel from '../assets/sponsor/image001.png';
-import logoTorneriaNorte from '../assets/sponsor/Logo.png';
 
 
 const Footer = () => {
-  const sponsors = [
-    { nombre: 'Abraham Climatizaciones', logo: logoAbraham },
-    { nombre: 'Venko Tandil', logo: logoVenko },
-    { nombre: 'Quesos Moreno', logo: logoQuesosMoreno },
-    { nombre: 'Beertan', logo: logoBeertan },
-    { nombre: 'Hummel Tandil', logo: logoHummel },
-    { nombre: 'Torneria Norte', logo: logoTorneriaNorte },
-  ];
+  const [sponsors, setSponsors] = useState([]);
+
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        const sponsorsData = await getSponsors();
+        // Limitar a 6 sponsors para el footer
+        setSponsors(sponsorsData.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching sponsors for footer:", error);
+      }
+    };
+
+    fetchSponsors();
+  }, []);
 
   const quickLinks = [
     { name: 'Inicio', href: '/' },
@@ -63,9 +66,15 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Nuestros Sponsors</h3>
             <div className="grid grid-cols-3 gap-4">
               {sponsors.map(sponsor => (
-                <div key={sponsor.nombre} className="bg-white p-2 rounded-lg flex items-center justify-center">
-                  <img src={sponsor.logo} alt={sponsor.nombre} className="max-h-12 max-w-full object-contain" />
-                </div>
+                <a 
+                  key={sponsor.id} 
+                  href={sponsor.link || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white p-2 rounded-lg flex items-center justify-center"
+                >
+                  <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 max-w-full object-contain" />
+                </a>
               ))}
             </div>
           </div>
