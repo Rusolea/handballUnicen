@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
@@ -18,12 +18,21 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      await login(email, password);
-      console.log('✅ [AdminLogin] Login exitoso, intentando navegar...');
-      navigate('/admin/dashboard');
+      // La función login ahora nos devuelve el perfil completo del usuario
+      const userProfile = await login(email, password);
+      
+      console.log('✅ [AdminLogin] Login exitoso, perfil obtenido:', userProfile);
+
+      // Verificamos el rol ANTES de navegar
+      if (userProfile && userProfile.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        // Si por alguna razón el usuario no es admin, mostramos un error
+        setError('Acceso denegado. No tienes permisos de administrador.');
+      }
     } catch (error) {
       console.error('Error de login:', error);
-      setError('Credenciales incorrectas. Por favor, intenta de nuevo.');
+      setError(error.message || 'Credenciales incorrectas. Por favor, intenta de nuevo.');
     } finally {
       setLoading(false);
     }

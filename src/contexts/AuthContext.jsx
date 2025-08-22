@@ -1,39 +1,62 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { auth } from '../services/firebase';
+// contexts/AuthContext.jsx
+
+import { useState, useEffect } from 'react';
+import { auth, db } from '../services/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { ensureUserProfile } from '../services/userService'; // <-- Importar
 
-const AuthContext = createContext();
+// Import the context from our new hook file
+import { AuthContext } from '../hooks/useAuth';
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null); // <-- Ahora guardará el perfil completo
+export default function AuthProvider({ children }) {
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const firebaseUser = userCredential.user;
+
+    if (firebaseUser) {
+      const userDocRef = doc(db, 'users', firebaseUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userProfile = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          role: userDocSnap.data().role,
+        };
+        setCurrentUser(userProfile);
+        return userProfile;
+      } else {
+        await signOut(auth);
+        throw new Error('Usuario no autorizado.');
+      }
+    }
   };
 
   const logout = () => {
+    setCurrentUser(null);
     return signOut(auth);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('👂 [AuthContext] onAuthStateChanged se disparó. Usuario:', user);
-      if (user) {
-        // Usuario ha iniciado sesión
-        const userProfile = await ensureUserProfile(user); // <-- Asegurar perfil
-        setCurrentUser(userProfile);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          setCurrentUser({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            role: userDocSnap.data().role,
+          });
+        } else {
+          // If user exists in Auth but not in Firestore, log them out.
+          setCurrentUser(null);
+          await signOut(auth);
+        }
       } else {
-        // Usuario ha cerrado sesión
         setCurrentUser(null);
       }
       setLoading(false);
@@ -42,15 +65,12 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    console.log('🔄 [AuthContext] El estado currentUser ha cambiado:', currentUser);
-  }, [currentUser]);
-
   const value = {
     currentUser,
     login,
     logout,
-    loading
+    loading,
+    isAdmin: currentUser?.role === 'admin'
   };
 
   return (
