@@ -16,13 +16,17 @@ import {
   FileText, // <--- Añadir ícono de Texto
   ClipboardList, // <--- Añadir ícono
   Trophy as TrophyIcon, // <--- Renombrar para evitar conflictos
-  Users as UsersIcon // <--- Renombrar para evitar conflictos
+  Users as UsersIcon,
+  Sparkles // <-- Importar nuevo ícono
 } from 'lucide-react';
+import { seedQueHacemosData } from '../services/queHacemosService'; // <-- Importar función de seed
 
 const AdminDashboard = () => {
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser, logout } = useAuth();
+  const [seedingMessage, setSeedingMessage] = useState('');
+  const [isSeeding, setIsSeeding] = useState(false);
 
   const fetchNoticias = async () => {
     setLoading(true);
@@ -50,6 +54,22 @@ const AdminDashboard = () => {
         console.error('Error al eliminar la noticia:', error);
         alert('Hubo un error al eliminar la noticia.');
       }
+    }
+  };
+
+  const handleSeedData = async () => {
+    if (!window.confirm('¿Estás seguro de que quieres cargar los datos iniciales para la página "Qué Hacemos"? Esto no sobreescribirá datos existentes.')) {
+      return;
+    }
+    setIsSeeding(true);
+    setSeedingMessage('');
+    try {
+      const result = await seedQueHacemosData();
+      setSeedingMessage(result.message);
+    } catch (error) {
+      setSeedingMessage('Ocurrió un error inesperado al cargar los datos.');
+    } finally {
+      setIsSeeding(false);
     }
   };
 
@@ -258,6 +278,21 @@ const AdminDashboard = () => {
                   <p className="text-sm text-gray-600">Editar títulos y listas</p>
                 </div>
               </Link>
+            </div>
+            <div className="mt-6 border-t pt-4 text-center">
+              <button
+                onClick={handleSeedData}
+                disabled={isSeeding}
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                {isSeeding ? 'Cargando...' : 'Cargar Datos Iniciales (Qué Hacemos)'}
+              </button>
+              {seedingMessage && (
+                <p className={`mt-2 text-sm ${seedingMessage.includes('Error') ? 'text-red-600' : 'text-gray-600'}`}>
+                  {seedingMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>
