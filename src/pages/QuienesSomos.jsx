@@ -134,6 +134,7 @@ const QuienesSomos = () => {
                     src={entrenador.imagenUrl} 
                     alt={entrenador.nombre}
                     className="w-24 h-24 bg-gray-200 rounded-full object-cover mx-auto mb-4"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -160,38 +161,17 @@ const QuienesSomos = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Galería del Equipo
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Momentos especiales y recuerdos de nuestro equipo
-            </p>
+            <h2 className="text-3xl font-bold text-gray-900">Galería de Momentos</h2>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {galeria.map((foto) => (
-              <div key={foto.id} className="card overflow-hidden group">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={foto.imagenUrl} 
-                    alt={foto.titulo}
-                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-                    <div className="text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
-                      <h3 className="text-lg font-semibold mb-2">{foto.titulo}</h3>
-                      <p className="text-sm">{foto.descripcion}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 bg-white">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {foto.titulo}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {foto.descripcion}
-                  </p>
-                </div>
+              <div key={foto.id} className="group aspect-w-1 aspect-h-1 block bg-gray-100 overflow-hidden rounded-lg">
+                <img 
+                  src={foto.imagenUrl} 
+                  alt={foto.descripcion || 'Imagen de la galería'} 
+                  className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-300"
+                  loading="lazy"
+                />
               </div>
             ))}
           </div>

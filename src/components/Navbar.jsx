@@ -82,6 +82,7 @@ const Navbar = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-label={isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
             >
               {isOpen ? (
                 <X className="block h-6 w-6" />

@@ -80,7 +80,14 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     className="flex-shrink-0 w-32 h-16 mx-4 bg-white p-2 rounded-lg flex items-center justify-center"
                   >
-                    <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 w-auto object-contain" />
+                    <img 
+                      src={sponsor.logoUrl} 
+                      alt={sponsor.nombre} 
+                      className="max-h-12 w-auto object-contain"
+                      loading="lazy"
+                      width="100"
+                      height="50"
+                    />
                   </a>
                 ))}
 
@@ -93,8 +100,16 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     className="flex-shrink-0 w-32 h-16 mx-4 bg-white p-2 rounded-lg flex items-center justify-center"
                     aria-hidden="true"
+                    tabIndex="-1"
                   >
-                    <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 w-auto object-contain" />
+                    <img 
+                      src={sponsor.logoUrl} 
+                      alt={sponsor.nombre} 
+                      className="max-h-12 w-auto object-contain"
+                      loading="lazy"
+                      width="100"
+                      height="50"
+                    />
                   </a>
                 ))}
                 

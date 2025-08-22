@@ -69,6 +69,7 @@ const Sponsors = () => {
                   src={sponsor.logoUrl} 
                   alt={sponsor.nombre}
                   className="max-h-24 max-w-full object-contain"
+                  loading="lazy"
                 />
               </a>
             ))}

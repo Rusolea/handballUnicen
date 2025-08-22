@@ -7,6 +7,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebas
 
 // Import the context from our new hook file
 import { AuthContext } from '../hooks/useAuth';
+import LoadingSpinner from '../components/LoadingSpinner'; // <-- Importar el spinner
 
 export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -73,9 +74,15 @@ export default function AuthProvider({ children }) {
     isAdmin: currentUser?.role === 'admin'
   };
 
+  // Si está cargando el estado de auth, muestra el spinner en toda la página
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  // Una vez cargado, renderiza la aplicación
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }; 
