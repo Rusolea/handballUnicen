@@ -19,6 +19,7 @@ const AdminLogin = () => {
 
     try {
       await login(email, password);
+      console.log('✅ [AdminLogin] Login exitoso, intentando navegar...');
       navigate('/admin/dashboard');
     } catch (error) {
       console.error('Error de login:', error);

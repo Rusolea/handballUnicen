@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('👂 [AuthContext] onAuthStateChanged se disparó. Usuario:', user);
       if (user) {
         // Usuario ha iniciado sesión
         const userProfile = await ensureUserProfile(user); // <-- Asegurar perfil
@@ -40,6 +41,10 @@ export const AuthProvider = ({ children }) => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    console.log('🔄 [AuthContext] El estado currentUser ha cambiado:', currentUser);
+  }, [currentUser]);
 
   const value = {
     currentUser,
