@@ -13,7 +13,10 @@ import {
   LogOut,
   Shield,
   Image, // <--- Añadir ícono de Imagen
-  FileText // <--- Añadir ícono de Texto
+  FileText, // <--- Añadir ícono de Texto
+  ClipboardList, // <--- Añadir ícono
+  Trophy as TrophyIcon, // <--- Renombrar para evitar conflictos
+  Users as UsersIcon // <--- Renombrar para evitar conflictos
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -178,7 +181,7 @@ const AdminDashboard = () => {
                 className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors duration-200"
               >
                 <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
-                  <Users className="w-5 h-5 text-white" />
+                  <UsersIcon className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900">Cuerpo Técnico</h3>
@@ -196,6 +199,63 @@ const AdminDashboard = () => {
                 <div>
                   <h3 className="font-medium text-gray-900">Textos de la Página</h3>
                   <p className="text-sm text-gray-600">Editar historia y valores</p>
+                </div>
+              </Link>
+            </div>
+
+            <hr className="my-6" />
+
+            <h3 className="text-md font-semibold text-gray-700 mb-4">Gestión Página "Qué Hacemos"</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+               <Link
+                to="/admin/actividades"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
+                  <ClipboardList className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Actividades</h3>
+                  <p className="text-sm text-gray-600">Gestionar actividades</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/admin/categorias"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-teal-500 hover:bg-teal-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center mr-3">
+                  <UsersIcon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Categorías</h3>
+                  <p className="text-sm text-gray-600">Gestionar categorías</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/admin/torneos"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-yellow-500 hover:bg-yellow-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
+                  <TrophyIcon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Torneos</h3>
+                  <p className="text-sm text-gray-600">Gestionar torneos</p>
+                </div>
+              </Link>
+
+               <Link
+                to="/admin/textos-que-hacemos"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Textos de la Página</h3>
+                  <p className="text-sm text-gray-600">Editar títulos y listas</p>
                 </div>
               </Link>
             </div>

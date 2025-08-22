@@ -21,6 +21,12 @@ const AdminGaleria = lazy(() => import('./pages/AdminGaleria'));
 const AdminEntrenadores = lazy(() => import('./pages/AdminEntrenadores'));
 const AdminTextoQuienesSomos = lazy(() => import('./pages/AdminTextoQuienesSomos'));
 
+// Nuevas páginas de administración para "Qué Hacemos"
+const AdminActividades = lazy(() => import('./pages/AdminActividades'));
+const AdminCategorias = lazy(() => import('./pages/AdminCategorias'));
+const AdminTorneos = lazy(() => import('./pages/AdminTorneos'));
+const AdminTextoQueHacemos = lazy(() => import('./pages/AdminTextoQueHacemos'));
+
 // Componente de loading
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -95,6 +101,39 @@ function App() {
                   element={
                     <PrivateRoute>
                       <AdminTextoQuienesSomos />
+                    </PrivateRoute>
+                  }
+                />
+                {/* Nuevas rutas de administracion para Que Hacemos */}
+                 <Route 
+                  path="/admin/actividades"
+                  element={
+                    <PrivateRoute>
+                      <AdminActividades />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/categorias"
+                  element={
+                    <PrivateRoute>
+                      <AdminCategorias />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/torneos"
+                  element={
+                    <PrivateRoute>
+                      <AdminTorneos />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/textos-que-hacemos"
+                  element={
+                    <PrivateRoute>
+                      <AdminTextoQueHacemos />
                     </PrivateRoute>
                   }
                 />
