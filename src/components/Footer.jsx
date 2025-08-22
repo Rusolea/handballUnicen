@@ -12,8 +12,8 @@ const Footer = () => {
     const fetchSponsors = async () => {
       try {
         const sponsorsData = await getSponsors();
-        // Limitar a 6 sponsors para el footer
-        setSponsors(sponsorsData.slice(0, 6));
+        // Remove this limit to show all sponsors
+        setSponsors(sponsorsData);
       } catch (error) {
         console.error("Error fetching sponsors for footer:", error);
       }
@@ -64,18 +64,41 @@ const Footer = () => {
           {/* Sponsors */}
           <div className="md:col-span-2">
             <h3 className="text-lg font-semibold mb-4">Nuestros Sponsors</h3>
-            <div className="grid grid-cols-3 gap-4">
-              {sponsors.map(sponsor => (
-                <a 
-                  key={sponsor.id} 
-                  href={sponsor.link || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white p-2 rounded-lg flex items-center justify-center"
-                >
-                  <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 max-w-full object-contain" />
-                </a>
-              ))}
+            
+            {/* Container with overflow hidden */}
+            <div className="relative w-full overflow-hidden">
+              
+              {/* Animated scrolling strip */}
+              <div className="flex animate-scroll">
+                
+                {/* First group of sponsors */}
+                {sponsors.map(sponsor => (
+                  <a 
+                    key={sponsor.id} 
+                    href={sponsor.link || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 w-32 h-16 mx-4 bg-white p-2 rounded-lg flex items-center justify-center"
+                  >
+                    <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 w-auto object-contain" />
+                  </a>
+                ))}
+
+                {/* Duplicate group for infinite loop effect */}
+                {sponsors.map(sponsor => (
+                  <a 
+                    key={`${sponsor.id}-duplicate`} 
+                    href={sponsor.link || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 w-32 h-16 mx-4 bg-white p-2 rounded-lg flex items-center justify-center"
+                    aria-hidden="true"
+                  >
+                    <img src={sponsor.logoUrl} alt={sponsor.nombre} className="max-h-12 w-auto object-contain" />
+                  </a>
+                ))}
+                
+              </div>
             </div>
           </div>
         </div>
