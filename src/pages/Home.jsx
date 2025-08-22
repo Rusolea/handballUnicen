@@ -4,6 +4,7 @@ import { Calendar, Users, Trophy, Newspaper } from 'lucide-react';
 import handballHero from '../assets/handball-hero-optimized.webp';
 import { getQuickLinks, getPaginaHome } from '../services/homeService';
 import { TailSpin } from 'react-loader-spinner';
+import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
 const iconMap = {
   Calendar: Calendar,
@@ -152,6 +153,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <ContactoWhatsapp />
     </div>
   );
 };

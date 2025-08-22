@@ -68,7 +68,10 @@ export const updateEntrenador = async (id, data) => {
   return updateDoc(docRef, data);
 };
 
-export const deleteEntrenador = async (id) => {
+export const deleteEntrenador = async (id, imageUrl) => {
+  if (imageUrl && !imageUrl.includes('placeholder.com')) {
+    await deleteImage(imageUrl);
+  }
   const docRef = doc(db, CUERPO_TECNICO_COLLECTION, id);
   return deleteDoc(docRef);
 };

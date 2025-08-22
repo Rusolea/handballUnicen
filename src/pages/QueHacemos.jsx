@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, Users, Trophy, Target, Clock, MapPin } from 'lucide-react';
 import { getActividades, getCategorias, getTorneos, getPaginaQueHacemos } from '../services/queHacemosService';
 import { TailSpin } from 'react-loader-spinner';
+import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
 // Mapeo de strings a componentes de íconos para renderizar dinámicamente
 const iconMap = {
@@ -250,6 +251,8 @@ const QueHacemos = () => {
           </div>
         </div>
       </section>
+
+      <ContactoWhatsapp />
     </div>
   );
 };

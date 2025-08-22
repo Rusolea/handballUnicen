@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // <-- Importar Link
-import { getPublishedNews } from '../services/newsService';
+import { getPublishedNews, getNewsById } from '../services/newsService';
 import { Calendar, Users, Trophy, Clock, ArrowRight } from 'lucide-react'; // <-- Importar ArrowRight
+import { TailSpin } from 'react-loader-spinner';
+import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState([]);
@@ -149,7 +151,7 @@ const Noticias = () => {
         </div>
       </section>
 
-      {/* La sección de Estadísticas se elimina completamente */}
+      <ContactoWhatsapp />
     </div>
   );
 };
