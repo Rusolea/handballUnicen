@@ -17,9 +17,13 @@ import {
   ClipboardList, // <--- Añadir ícono
   Trophy as TrophyIcon, // <--- Renombrar para evitar conflictos
   Users as UsersIcon,
-  Sparkles // <-- Importar nuevo ícono
+  Sparkles,
+  Heart,
+  Home as HomeIcon, // <-- Importar y renombrar
+  Link as LinkIcon // <-- Importar y renombrar
 } from 'lucide-react';
-import { seedQueHacemosData } from '../services/queHacemosService'; // <-- Importar función de seed
+import { seedQueHacemosData } from '../services/queHacemosService';
+import { seedHomeData } from '../services/homeService'; // <-- Importar función de seed del Home
 
 const AdminDashboard = () => {
   const [noticias, setNoticias] = useState([]);
@@ -57,17 +61,18 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSeedData = async () => {
-    if (!window.confirm('¿Estás seguro de que quieres cargar los datos iniciales para la página "Qué Hacemos"? Esto no sobreescribirá datos existentes.')) {
+  const handleSeedData = async (seedFunction) => {
+    const pageName = seedFunction.name.includes('QueHacemos') ? 'Qué Hacemos' : 'Home';
+    if (!window.confirm(`¿Estás seguro de que quieres cargar los datos iniciales para la página "${pageName}"? Esto no sobreescribirá datos existentes.`)) {
       return;
     }
     setIsSeeding(true);
     setSeedingMessage('');
     try {
-      const result = await seedQueHacemosData();
+      const result = await seedFunction();
       setSeedingMessage(result.message);
     } catch (error) {
-      setSeedingMessage('Ocurrió un error inesperado al cargar los datos.');
+      setSeedingMessage(`Ocurrió un error inesperado al cargar los datos de ${pageName}.`);
     } finally {
       setIsSeeding(false);
     }
@@ -281,20 +286,86 @@ const AdminDashboard = () => {
             </div>
             <div className="mt-6 border-t pt-4 text-center">
               <button
-                onClick={handleSeedData}
+                onClick={() => handleSeedData(seedQueHacemosData)}
                 disabled={isSeeding}
                 className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
-                {isSeeding ? 'Cargando...' : 'Cargar Datos Iniciales (Qué Hacemos)'}
+                {isSeeding ? 'Cargando...' : 'Cargar Datos (Qué Hacemos)'}
               </button>
               {seedingMessage && (
-                <p className={`mt-2 text-sm ${seedingMessage.includes('Error') ? 'text-red-600' : 'text-gray-600'}`}>
+                <p className={`mt-2 text-sm ${seedingMessage.includes('Error') || seedingMessage.includes('inesperado') ? 'text-red-600' : 'text-gray-600'}`}>
                   {seedingMessage}
                 </p>
               )}
             </div>
           </div>
+        </div>
+
+        {/* Gestión de Home */}
+        <div className="bg-white rounded-lg shadow mb-8">
+            <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Gestión Página de Inicio (Home)</h2>
+            </div>
+            <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Link
+                        to="/admin/quick-links"
+                        className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors duration-200"
+                    >
+                        <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                            <LinkIcon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                            <h3 className="font-medium text-gray-900">Accesos Rápidos</h3>
+                            <p className="text-sm text-gray-600">Gestionar los 4 enlaces principales</p>
+                        </div>
+                    </Link>
+                     <Link
+                        to="/admin/textos-home"
+                        className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-gray-500 hover:bg-gray-50 transition-colors duration-200"
+                    >
+                        <div className="w-10 h-10 bg-gray-500 rounded-lg flex items-center justify-center mr-3">
+                            <HomeIcon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                            <h3 className="font-medium text-gray-900">Textos del Home</h3>
+                            <p className="text-sm text-gray-600">Editar títulos y párrafos</p>
+                        </div>
+                    </Link>
+                </div>
+                 <div className="mt-6 border-t pt-4 text-center">
+                    <button
+                        onClick={() => handleSeedData(seedHomeData)}
+                        disabled={isSeeding}
+                        className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
+                    >
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        {isSeeding ? 'Cargando...' : 'Cargar Datos Iniciales (Home)'}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {/* Gestión de Sponsors */}
+        <div className="bg-white rounded-lg shadow mb-8">
+            <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Gestión de Sponsors</h2>
+            </div>
+            <div className="p-6">
+                <Link
+                    to="/admin/sponsors"
+                    className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition-colors duration-200"
+                >
+                    <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center mr-3">
+                        <Heart className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                        <h3 className="font-medium text-gray-900">Gestionar Sponsors</h3>
+                        <p className="text-sm text-gray-600">Añadir, editar o eliminar sponsors</p>
+                    </div>
+                </Link>
+            </div>
         </div>
 
         {/* Recent Noticias */}

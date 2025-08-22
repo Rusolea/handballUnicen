@@ -27,6 +27,13 @@ const AdminCategorias = lazy(() => import('./pages/AdminCategorias'));
 const AdminTorneos = lazy(() => import('./pages/AdminTorneos'));
 const AdminTextoQueHacemos = lazy(() => import('./pages/AdminTextoQueHacemos'));
 
+// Nueva página de administración para "Sponsors"
+const AdminSponsors = lazy(() => import('./pages/AdminSponsors'));
+
+// Nuevas páginas de administración para "Home"
+const AdminQuickLinks = lazy(() => import('./pages/AdminQuickLinks'));
+const AdminTextoHome = lazy(() => import('./pages/AdminTextoHome'));
+
 // Componente de loading
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -134,6 +141,32 @@ function App() {
                   element={
                     <PrivateRoute>
                       <AdminTextoQueHacemos />
+                    </PrivateRoute>
+                  }
+                />
+                {/* Nueva ruta de administracion para Sponsors */}
+                <Route 
+                  path="/admin/sponsors"
+                  element={
+                    <PrivateRoute>
+                      <AdminSponsors />
+                    </PrivateRoute>
+                  }
+                />
+                 {/* Nueva ruta de administracion para Home */}
+                <Route 
+                  path="/admin/quick-links"
+                  element={
+                    <PrivateRoute>
+                      <AdminQuickLinks />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/textos-home"
+                  element={
+                    <PrivateRoute>
+                      <AdminTextoHome />
                     </PrivateRoute>
                   }
                 />

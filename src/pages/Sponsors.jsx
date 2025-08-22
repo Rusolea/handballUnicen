@@ -1,21 +1,42 @@
+import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
-import logoAbraham from '../assets/sponsor/1000036496-removebg-preview.png';
-import logoVenko from '../assets/sponsor/1000036719-removebg-preview.png';
-import logoQuesosMoreno from '../assets/sponsor/images (4).png';
-import logoBeertan from '../assets/sponsor/image004.jpg';
-import logoHummel from '../assets/sponsor/image001.png';
-import logoTorneriaNorte from '../assets/sponsor/Logo.png';
-
+import { getSponsors } from '../services/sponsorsService';
+import { TailSpin } from 'react-loader-spinner';
 
 const Sponsors = () => {
-  const sponsorsList = [
-    { nombre: 'Abraham Climatizaciones', logo: logoAbraham, link: '#' },
-    { nombre: 'Venko Tandil', logo: logoVenko, link: '#' },
-    { nombre: 'Quesos Moreno', logo: logoQuesosMoreno, link: '#' },
-    { nombre: 'Beertan', logo: logoBeertan, link: '#' },
-    { nombre: 'Hummel Tandil', logo: logoHummel, link: '#' },
-    { nombre: 'Torneria Norte', logo: logoTorneriaNorte, link: '#' },
-  ];
+  const [sponsorsList, setSponsorsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        setLoading(true);
+        const data = await getSponsors();
+        setSponsorsList(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error al cargar los sponsors:", err);
+        setError("No se pudieron cargar los sponsors. Por favor, intente más tarde.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSponsors();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TailSpin color="#00BFFF" height={80} width={80} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center py-20 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -37,14 +58,14 @@ const Sponsors = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 items-center">
             {sponsorsList.map((sponsor) => (
               <a 
-                key={sponsor.nombre}
-                href={sponsor.link}
+                key={sponsor.id}
+                href={sponsor.link || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-center items-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 h-40"
               >
                 <img 
-                  src={sponsor.logo} 
+                  src={sponsor.logoUrl} 
                   alt={sponsor.nombre}
                   className="max-h-24 max-w-full object-contain"
                 />
