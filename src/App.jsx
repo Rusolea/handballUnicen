@@ -11,6 +11,7 @@ const QuienesSomos = lazy(() => import('./pages/QuienesSomos'));
 const QueHacemos = lazy(() => import('./pages/QueHacemos'));
 const Sponsors = lazy(() => import('./pages/Sponsors'));
 const Noticias = lazy(() => import('./pages/Noticias'));
+const NoticiaDetalle = lazy(() => import('./pages/NoticiaDetalle')); // <-- Import the new component
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const NuevaNoticia = lazy(() => import('./pages/NuevaNoticia'));
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/que-hacemos" element={<QueHacemos />} />
                 <Route path="/sponsors" element={<Sponsors />} />
                 <Route path="/noticias" element={<Noticias />} />
+                <Route path="/noticias/:id" element={<NoticiaDetalle />} /> {/* <-- Add the new route */}
                 
                 {/* Rutas de administración */}
                 <Route path="/admin" element={<AdminLogin />} />
