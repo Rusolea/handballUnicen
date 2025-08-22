@@ -11,7 +11,9 @@ import {
   Trophy, 
   Calendar,
   LogOut,
-  Shield
+  Shield,
+  Image, // <--- Añadir ícono de Imagen
+  FileText // <--- Añadir ícono de Texto
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -114,7 +116,8 @@ const AdminDashboard = () => {
             <h2 className="text-lg font-semibold text-gray-900">Acciones Rápidas</h2>
           </div>
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h3 className="text-md font-semibold text-gray-700 mb-4">Gestión de Noticias</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               <Link
                 to="/admin/nueva-noticia"
                 className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-azulUnicen hover:bg-blue-50 transition-colors duration-200"
@@ -151,6 +154,48 @@ const AdminDashboard = () => {
                 <div>
                   <h3 className="font-medium text-gray-900">Ver Sitio</h3>
                   <p className="text-sm text-gray-600">Ir al sitio público</p>
+                </div>
+              </Link>
+            </div>
+            
+            <h3 className="text-md font-semibold text-gray-700 mb-4">Gestión Página "Quiénes Somos"</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Link
+                to="/admin/galeria"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+                  <Image className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Galería de Fotos</h3>
+                  <p className="text-sm text-gray-600">Gestionar imágenes</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/admin/entrenadores"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Cuerpo Técnico</h3>
+                  <p className="text-sm text-gray-600">Gestionar entrenadores</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/admin/textos-quienes-somos"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition-colors duration-200"
+              >
+                <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Textos de la Página</h3>
+                  <p className="text-sm text-gray-600">Editar historia y valores</p>
                 </div>
               </Link>
             </div>

@@ -16,6 +16,11 @@ const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const NuevaNoticia = lazy(() => import('./pages/NuevaNoticia'));
 const EditarNoticia = lazy(() => import('./pages/EditarNoticia'));
 
+// Nuevas páginas de administración para "Quiénes Somos"
+const AdminGaleria = lazy(() => import('./pages/AdminGaleria'));
+const AdminEntrenadores = lazy(() => import('./pages/AdminEntrenadores'));
+const AdminTextoQuienesSomos = lazy(() => import('./pages/AdminTextoQuienesSomos'));
+
 // Componente de loading
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -67,6 +72,31 @@ function App() {
                       <EditarNoticia />
                     </PrivateRoute>
                   } 
+                />
+                {/* Nuevas rutas de administracion para Quienes Somos */}
+                <Route 
+                  path="/admin/galeria"
+                  element={
+                    <PrivateRoute>
+                      <AdminGaleria />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/entrenadores"
+                  element={
+                    <PrivateRoute>
+                      <AdminEntrenadores />
+                    </PrivateRoute>
+                  }
+                />
+                 <Route 
+                  path="/admin/textos-quienes-somos"
+                  element={
+                    <PrivateRoute>
+                      <AdminTextoQuienesSomos />
+                    </PrivateRoute>
+                  }
                 />
               </Routes>
             </Suspense>
