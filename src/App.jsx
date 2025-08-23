@@ -1,42 +1,34 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer'; // Importar el Footer
 import AuthProvider from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import LoadingSpinner from './components/LoadingSpinner'; // <-- Import the new component
+import LoadingSpinner from './components/LoadingSpinner';
 
-// Lazy imports para todas las páginas
+// --- Navbar is loaded statically for immediate display ---
+import Navbar from './components/Navbar'; 
+
+// --- Pages and below-the-fold components are lazy-loaded ---
 const Home = lazy(() => import('./pages/Home'));
 const QuienesSomos = lazy(() => import('./pages/QuienesSomos'));
 const QueHacemos = lazy(() => import('./pages/QueHacemos'));
 const Sponsors = lazy(() => import('./pages/Sponsors'));
 const Noticias = lazy(() => import('./pages/Noticias'));
-const NoticiaDetalle = lazy(() => import('./pages/NoticiaDetalle')); // <-- Import the new component
+const NoticiaDetalle = lazy(() => import('./pages/NoticiaDetalle'));
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const NuevaNoticia = lazy(() => import('./pages/NuevaNoticia'));
 const EditarNoticia = lazy(() => import('./pages/EditarNoticia'));
-
-// Nuevas páginas de administración para "Quiénes Somos"
 const AdminGaleria = lazy(() => import('./pages/AdminGaleria'));
 const AdminEntrenadores = lazy(() => import('./pages/AdminEntrenadores'));
 const AdminTextoQuienesSomos = lazy(() => import('./pages/AdminTextoQuienesSomos'));
-
-// Nuevas páginas de administración para "Qué Hacemos"
 const AdminActividades = lazy(() => import('./pages/AdminActividades'));
 const AdminCategorias = lazy(() => import('./pages/AdminCategorias'));
 const AdminTorneos = lazy(() => import('./pages/AdminTorneos'));
 const AdminTextoQueHacemos = lazy(() => import('./pages/AdminTextoQueHacemos'));
-
-// Nueva página de administración para "Sponsors"
 const AdminSponsors = lazy(() => import('./pages/AdminSponsors'));
-
-// Nuevas páginas de administración para "Home"
 const AdminQuickLinks = lazy(() => import('./pages/AdminQuickLinks'));
 const AdminTextoHome = lazy(() => import('./pages/AdminTextoHome'));
-
-// El componente de loading se ha movido a su propio archivo
+const Footer = lazy(() => import('./components/Footer')); // <-- CORRECT: Lazy import for Footer
 
 function App() {
   return (
@@ -53,7 +45,7 @@ function App() {
                 <Route path="/que-hacemos" element={<QueHacemos />} />
                 <Route path="/sponsors" element={<Sponsors />} />
                 <Route path="/noticias" element={<Noticias />} />
-                <Route path="/noticias/:id" element={<NoticiaDetalle />} /> {/* <-- Add the new route */}
+                <Route path="/noticias/:id" element={<NoticiaDetalle />} />
                 
                 {/* Rutas de administración */}
                 <Route path="/admin" element={<AdminLogin />} />
@@ -168,7 +160,12 @@ function App() {
               </Routes>
             </Suspense>
           </main>
-          <Footer />
+
+          {/* CORRECT: Footer is wrapped in its own Suspense boundary */}
+          <Suspense fallback={null}> 
+            <Footer />
+          </Suspense>
+
         </div>
       </Router>
     </AuthProvider>
