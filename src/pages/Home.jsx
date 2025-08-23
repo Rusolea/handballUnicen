@@ -53,31 +53,29 @@ const Home = () => {
   
   return (
     <div className="min-h-screen relative">
-      {/* Hero Section */}
-      <section
-        className="relative text-white bg-top bg-cover"
-        style={{ backgroundImage: `url(${handballHero})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
-        <div className="relative z-10 px-4 py-24 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">{textos.heroTitulo}</h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            {textos.heroSubtitulo}
+      {/* Hero Section - OPTIMIZED */}
+      <section className="relative h-96 md:h-[500px] w-full text-white">
+        {/* The image as a high-priority img tag */}
+        <img
+          src={handballHero}
+          alt="Equipo de Handball Unicen en la cancha"
+          width="1090"
+          height="726"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        {/* Text and buttons container */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            ESCUELA DE HANDBALL UNICEN
+          </h1>
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto">
+            FORMANDO DEPORTISTAS INTEGRALES EN LA UNICEN
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/quienes-somos"
-              className="btn-primary text-lg px-8 py-3"
-            >
-              Conocenos
-            </Link>
-            <Link
-              to="/noticias"
-              className="bg-white text-azulUnicen hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg"
-            >
-              Ver Noticias
-            </Link>
-          </div>
+          {/* Aquí irían tus botones si los tuvieras */}
         </div>
       </section>
 

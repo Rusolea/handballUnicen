@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createNews, uploadImage } from '../services/newsService';
-import { ArrowLeft, Upload, Plus, X, Save, Send } from 'lucide-react';
+import { ArrowLeft, Upload, Plus, X, Save, Send, AlertTriangle } from 'lucide-react';
 
 const NuevaNoticia = () => {
   const navigate = useNavigate();
@@ -295,6 +295,31 @@ const NuevaNoticia = () => {
                 )}
               </div>
             </div>
+            
+            {/* --- Optimization Warning --- */}
+            <div className="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">¡Importante para el rendimiento!</p>
+                  <p className="text-sm mt-1">
+                    Para que el sitio cargue rápido, asegúrate de que tus imágenes estén optimizadas. Recomendamos que pesen menos de 200 KB. Puedes usar la herramienta gratuita{' '}
+                    <a 
+                      href="https://squoosh.app/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="font-semibold underline hover:text-yellow-900"
+                    >
+                      Squoosh.app
+                    </a> 
+                    {' '}para comprimirlas antes de subirlas.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* --------------------------- */}
 
             {/* Botones */}
             <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
