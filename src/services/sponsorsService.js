@@ -12,7 +12,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 // Importamos las funciones de manejo de imágenes desde el nuevo adminService
-import { uploadImage, deleteImage } from './adminService';
+import { deleteImage } from './adminService';
 
 const SPONSORS_COLLECTION = 'sponsors';
 
