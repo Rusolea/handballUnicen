@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getNewsById, updateNews, deleteNews, uploadImage } from '../services/newsService';
 import { ArrowLeft, Upload, Plus, X, Trash2, AlertTriangle } from 'lucide-react';
+import { TailSpin } from 'react-loader-spinner';
+import imageCompression from 'browser-image-compression';
 
 const EditarNoticia = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const EditarNoticia = () => {
   });
   const [imagen, setImagen] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
+  const [imageSizeWarning, setImageSizeWarning] = useState(''); // <-- NUEVO ESTADO
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const categorias = [
@@ -72,21 +75,49 @@ const EditarNoticia = () => {
     }));
   };
 
-  const handleImagenChange = (e) => {
+  const handleImagenChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImagen(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagenPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // --- VALIDACIÓN DE TAMAÑO ---
+      const fileSizeKB = file.size / 1024;
+      const MAX_SIZE_KB = 200;
+
+      if (fileSizeKB > MAX_SIZE_KB) {
+        setImageSizeWarning(`¡Atención! La imagen pesa ${fileSizeKB.toFixed(1)} KB. Se recomienda que pese menos de ${MAX_SIZE_KB} KB para no afectar el rendimiento.`);
+      } else {
+        setImageSizeWarning(''); // Limpiar advertencia si el tamaño es correcto
+      }
+      // --- FIN DE LA VALIDACIÓN ---
+
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        setImagen(compressedFile); // Guardar el archivo comprimido
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagenPreview(reader.result);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error('Error al comprimir la imagen:', error);
+        // Fallback al archivo original si la compresión falla
+        setImagen(file);
+        setImagenPreview(URL.createObjectURL(file));
+      }
     }
   };
 
   const removeImagen = () => {
     setImagen(null);
     setImagenPreview(null);
+    setFormData(prev => ({ ...prev, imagenUrl: '' })); // Marcar para eliminar la imagen existente
+    setImageSizeWarning(''); // <-- Limpiar advertencia al quitar imagen
+    document.getElementById('imagen-upload').value = '';
   };
 
   const handleSubmit = async (e) => {
@@ -382,7 +413,7 @@ const EditarNoticia = () => {
               </div>
             </div>
 
-            {/* --- Optimization Warning --- */}
+            {/* Advertencia Educativa (amarilla, siempre visible) */}
             <div className="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -405,7 +436,21 @@ const EditarNoticia = () => {
                 </div>
               </div>
             </div>
-            {/* --------------------------- */}
+
+            {/* --- ADVERTENCIA DE TAMAÑO (ROJA, CONDICIONAL) --- */}
+            {imageSizeWarning && (
+              <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-800 rounded-r-lg">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <AlertTriangle className="h-5 w-5 text-red-500" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium">{imageSizeWarning}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* ----------------------------------------------- */}
 
             {/* Botones */}
             <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">

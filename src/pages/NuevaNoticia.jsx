@@ -18,6 +18,7 @@ const NuevaNoticia = () => {
   });
   const [imagen, setImagen] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
+  const [imageSizeWarning, setImageSizeWarning] = useState(''); // <-- NUEVO ESTADO
 
   const categorias = [
     'Partido',
@@ -36,9 +37,20 @@ const NuevaNoticia = () => {
     }));
   };
 
-  const handleImagenChange = (e) => {
+  const handleImagenChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      // --- VALIDACIÓN DE TAMAÑO ---
+      const fileSizeKB = file.size / 1024;
+      const MAX_SIZE_KB = 200;
+
+      if (fileSizeKB > MAX_SIZE_KB) {
+        setImageSizeWarning(`¡Atención! La imagen pesa ${fileSizeKB.toFixed(1)} KB. Se recomienda que pese menos de ${MAX_SIZE_KB} KB para no afectar el rendimiento.`);
+      } else {
+        setImageSizeWarning(''); // Limpiar advertencia si el tamaño es correcto
+      }
+      // --- FIN DE LA VALIDACIÓN ---
+
       setImagen(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -51,6 +63,8 @@ const NuevaNoticia = () => {
   const removeImagen = () => {
     setImagen(null);
     setImagenPreview(null);
+    setImageSizeWarning(''); // <-- Limpiar advertencia al quitar imagen
+    document.getElementById('imagen-upload').value = '';
   };
 
   const handleSubmit = async (statusToSet) => {
@@ -296,7 +310,7 @@ const NuevaNoticia = () => {
               </div>
             </div>
             
-            {/* --- Optimization Warning --- */}
+            {/* Advertencia Educativa (amarilla, siempre visible) */}
             <div className="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -319,7 +333,21 @@ const NuevaNoticia = () => {
                 </div>
               </div>
             </div>
-            {/* --------------------------- */}
+
+            {/* --- ADVERTENCIA DE TAMAÑO (ROJA, CONDICIONAL) --- */}
+            {imageSizeWarning && (
+              <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-800 rounded-r-lg">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <AlertTriangle className="h-5 w-5 text-red-500" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium">{imageSizeWarning}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* ----------------------------------------------- */}
 
             {/* Botones */}
             <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
