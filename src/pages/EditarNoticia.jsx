@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getNewsById, updateNews, deleteNews, uploadImage } from '../services/newsService';
-import { ArrowLeft, Upload, Plus, X, Trash2, AlertTriangle } from 'lucide-react';
-import { TailSpin } from 'react-loader-spinner';
+import { ArrowLeft, Upload, Plus, X, Trash2, AlertTriangle, Loader } from 'lucide-react'; // <-- Añadir Loader
 import imageCompression from 'browser-image-compression';
 
 const EditarNoticia = () => {
@@ -165,7 +164,7 @@ const EditarNoticia = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-azulUnicen mx-auto mb-4"></div>
+          <Loader className="w-12 h-12 text-azulUnicen animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Cargando noticia...</p>
         </div>
       </div>

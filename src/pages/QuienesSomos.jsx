@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Users, Award, Target, User } from 'lucide-react'; // Importar el ícono User
+import { Users, Award, Target, User, Loader } from 'lucide-react'; // <-- Añadir Loader
 import { getPaginaQuienesSomos, getEntrenadores, getGaleria } from '../services/quienesSomosService';
-import { TailSpin } from 'react-loader-spinner';
-import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
+import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const QuienesSomos = () => {
   const [textos, setTextos] = useState({});
@@ -49,7 +48,7 @@ const QuienesSomos = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <TailSpin color="#00BFFF" height={80} width={80} />
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }

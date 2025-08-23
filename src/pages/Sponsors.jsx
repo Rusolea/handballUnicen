@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Loader } from 'lucide-react'; // <-- Añadir Loader
 import { getSponsors } from '../services/sponsorsService';
-import { TailSpin } from 'react-loader-spinner';
-import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
+import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const Sponsors = () => {
   const [sponsorsList, setSponsorsList] = useState([]);
@@ -30,7 +29,7 @@ const Sponsors = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <TailSpin color="#00BFFF" height={80} width={80} />
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }

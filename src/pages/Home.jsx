@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, Trophy, Newspaper } from 'lucide-react';
-import handballHero from '../assets/handball-hero-optimized.webp';
 import { getQuickLinks, getPaginaHome } from '../services/homeService';
-import { TailSpin } from 'react-loader-spinner';
-import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
+import { Loader, Calendar, Users, Trophy, Newspaper } from 'lucide-react'; // <-- Añadir Loader
+import handballHero from '../assets/handball-hero-optimized.webp';
+import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const iconMap = {
   Calendar: Calendar,
@@ -41,8 +40,8 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <TailSpin color="#00BFFF" height={80} width={80} />
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }

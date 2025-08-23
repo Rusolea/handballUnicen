@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Users, Trophy, Target, Clock, MapPin } from 'lucide-react';
-import { getActividades, getCategorias, getTorneos, getPaginaQueHacemos } from '../services/queHacemosService';
-import { TailSpin } from 'react-loader-spinner';
-import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
+import { getPaginaQueHacemos, getCategorias, getActividades, getTorneos } from '../services/queHacemosService';
+import { Loader, Target, Trophy, Users, Calendar, Clock, MapPin } from 'lucide-react'; // <-- Importar los íconos
+import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 // Mapeo de strings a componentes de íconos para renderizar dinámicamente
 const iconMap = {
@@ -54,7 +53,7 @@ const QueHacemos = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <TailSpin color="#00BFFF" height={80} width={80} />
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }

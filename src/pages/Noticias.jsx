@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // <-- Importar Link
 import { getPublishedNews, getNewsById } from '../services/newsService';
-import { Calendar, Users, Trophy, Clock, ArrowRight } from 'lucide-react'; // <-- Importar ArrowRight
-import { TailSpin } from 'react-loader-spinner';
+import { Calendar, Users, Trophy, Clock, ArrowRight, Loader } from 'lucide-react'; // <-- Importar ArrowRight
 import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
 const Noticias = () => {
@@ -43,11 +42,8 @@ const Noticias = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-azulUnicen mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando noticias...</p>
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getNewsById } from '../services/newsService'; // Asegúrate que el import sea getNewsById
-import { Calendar, ArrowLeft, Users, Trophy } from 'lucide-react';
-import { TailSpin } from 'react-loader-spinner';
+import { Calendar, ArrowLeft, Users, Trophy, Loader } from 'lucide-react';
 
 const NoticiaDetalle = () => {
   const [noticia, setNoticia] = useState(null);
@@ -49,7 +48,7 @@ const NoticiaDetalle = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <TailSpin color="#00BFFF" height={80} width={80} />
+        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
       </div>
     );
   }
