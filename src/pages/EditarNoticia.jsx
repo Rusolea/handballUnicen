@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getNewsById, updateNews, deleteNews, uploadImage } from '../services/newsService';
+import { getNewsByIdForAdmin, updateNews, deleteNews, uploadImage } from '../services/adminService';
 import { ArrowLeft, Upload, Plus, X, Trash2, AlertTriangle, Loader } from 'lucide-react'; // <-- Añadir Loader
 import imageCompression from 'browser-image-compression';
 
@@ -37,7 +37,7 @@ const EditarNoticia = () => {
   useEffect(() => {
     const fetchNoticia = async () => {
       try {
-        const data = await getNewsById(id); // <-- Usando el servicio
+        const data = await getNewsByIdForAdmin(id); // <-- Usando el servicio
         if (data) {
           setNoticia(data);
           setFormData({

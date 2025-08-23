@@ -11,7 +11,8 @@ import {
   query,
   serverTimestamp,
 } from 'firebase/firestore';
-import { uploadImage, deleteImage } from './newsService'; // Reutilizamos el servicio de imágenes
+// Importamos las funciones de manejo de imágenes desde el nuevo adminService
+import { uploadImage, deleteImage } from './adminService';
 
 const SPONSORS_COLLECTION = 'sponsors';
 

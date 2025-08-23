@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createNews, uploadImage } from '../services/newsService';
-import { ArrowLeft, Upload, Plus, X, Save, Send, AlertTriangle } from 'lucide-react';
+import { createNews, uploadImage } from '../services/adminService'; // <-- CAMBIO
+import { ArrowLeft, Upload, X, AlertTriangle } from 'lucide-react';
+import { Loader } from 'lucide-react';
 
 const NuevaNoticia = () => {
   const navigate = useNavigate();

@@ -13,7 +13,8 @@ import {
   serverTimestamp,
   setDoc, // <-- 1. Importar setDoc
 } from 'firebase/firestore';
-import { uploadImage, deleteImage } from './newsService'; // Reutilizamos las funciones de newsService
+// Importamos las funciones de manejo de imágenes desde el nuevo adminService
+import { deleteImage } from './adminService';
 
 // --- COLECCIONES ---
 const GALERIA_COLLECTION = 'galeriaQuienesSomos';

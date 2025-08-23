@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllNewsAdmin, deleteNews } from '../services/newsService';
+import { getAllNewsAdmin, deleteNews } from '../services/adminService';
 import { useAuth } from '../hooks/useAuth';
 import { 
   Plus, 
