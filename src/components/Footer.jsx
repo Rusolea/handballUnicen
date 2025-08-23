@@ -2,17 +2,17 @@ import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getSponsors } from '../services/sponsorsService';
-import logoHandballUnicen from '../assets/logohandballUnicen.png';
+import logoUnicenUrl from '../assets/logohandballUnicen.svg'; // Importar como URL
 
 
 const Footer = () => {
+  console.log('⬇️ [Footer] Renderizando (carga perezosa)...');
   const [sponsors, setSponsors] = useState([]);
 
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
         const sponsorsData = await getSponsors();
-        // Remove this limit to show all sponsors
         setSponsors(sponsorsData);
       } catch (error) {
         console.error("Error fetching sponsors for footer:", error);
@@ -36,7 +36,13 @@ const Footer = () => {
           {/* Logo e Info */}
           <div className="md:col-span-2 lg:col-span-1">
             <div className="flex items-center mb-4">
-              <img src={logoHandballUnicen} alt="Handball Unicen" className="h-12 w-auto mr-3" />
+              <img 
+                src={logoUnicenUrl} 
+                alt="Logo Handball Unicen" 
+                className="h-12 w-auto mr-3"
+                width="48"
+                height="48"
+              />
               <span className="text-xl font-bold">Handball Unicen</span>
             </div>
             <p className="text-gray-300 text-sm mb-4">
@@ -71,7 +77,6 @@ const Footer = () => {
               {/* Animated scrolling strip */}
               <div className="flex animate-scroll">
                 
-                {/* First group of sponsors */}
                 {sponsors.map(sponsor => (
                   <a 
                     key={sponsor.id} 
@@ -91,7 +96,6 @@ const Footer = () => {
                   </a>
                 ))}
 
-                {/* Duplicate group for infinite loop effect */}
                 {sponsors.map(sponsor => (
                   <a 
                     key={`${sponsor.id}-duplicate`} 

@@ -1,10 +1,11 @@
 // services/newsService.js - Versión Pública
-import { db } from './firebase';
+import { getDb } from './firebase';
 import { collection, getDocs, query, where, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const NEWS_COLLECTION = 'noticias';
 
 export const getPublishedNews = async () => {
+  const db = getDb();
   const q = query(
     collection(db, NEWS_COLLECTION),
     where('status', '==', 'published'),
@@ -15,6 +16,7 @@ export const getPublishedNews = async () => {
 };
 
 export const getNewsById = async (id) => {
+  const db = getDb();
   const docRef = doc(db, NEWS_COLLECTION, id);
   const docSnap = await getDoc(docRef);
   const noticia = docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;

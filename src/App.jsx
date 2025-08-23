@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// AuthProvider NO se importa aquí
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -32,14 +33,14 @@ const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 
 function App() {
   return (
-    // AuthProvider ya NO envuelve toda la aplicación
+    // NO HAY AuthProvider aquí
     <Router>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <Navbar />
         <main className="flex-grow">
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-              {/* --- RUTAS PÚBLICAS --- */}
+              {/* --- RUTAS PÚBLICAS (sin AuthProvider) --- */}
               <Route path="/" element={<Home />} />
               <Route path="/quienes-somos" element={<QuienesSomos />} />
               <Route path="/que-hacemos" element={<QueHacemos />} />
@@ -48,31 +49,21 @@ function App() {
               <Route path="/noticias/:id" element={<NoticiaDetalle />} />
               <Route path="/admin" element={<AdminLogin />} />
 
-              {/* --- RUTAS DE ADMINISTRACIÓN (AGRUPADAS) --- */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route 
-                  path="dashboard" 
-                  element={<PrivateRoute><AdminDashboard /></PrivateRoute>} 
-                />
-                <Route 
-                  path="nueva-noticia" 
-                  element={<PrivateRoute><NuevaNoticia /></PrivateRoute>} 
-                />
-                <Route 
-                  path="editar-noticia/:id" 
-                  element={<PrivateRoute><EditarNoticia /></PrivateRoute>} 
-                />
-                {/* ... (añadir aquí TODAS las otras rutas de admin) ... */}
-                <Route path="galeria" element={<PrivateRoute><AdminGaleria /></PrivateRoute>} />
-                <Route path="entrenadores" element={<PrivateRoute><AdminEntrenadores /></PrivateRoute>} />
-                <Route path="textos-quienes-somos" element={<PrivateRoute><AdminTextoQuienesSomos /></PrivateRoute>} />
-                <Route path="actividades" element={<PrivateRoute><AdminActividades /></PrivateRoute>} />
-                <Route path="categorias" element={<PrivateRoute><AdminCategorias /></PrivateRoute>} />
-                <Route path="torneos" element={<PrivateRoute><AdminTorneos /></PrivateRoute>} />
-                <Route path="textos-que-hacemos" element={<PrivateRoute><AdminTextoQueHacemos /></PrivateRoute>} />
-                <Route path="sponsors" element={<PrivateRoute><AdminSponsors /></PrivateRoute>} />
-                <Route path="quick-links" element={<PrivateRoute><AdminQuickLinks /></PrivateRoute>} />
-                <Route path="textos-home" element={<PrivateRoute><AdminTextoHome /></PrivateRoute>} />
+              {/* --- RUTAS DE ADMIN (envueltas en el layout que SÍ tiene el AuthProvider) --- */}
+              <Route element={<AdminLayout />}>
+                <Route path="/admin/dashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
+                <Route path="/admin/nueva-noticia" element={<PrivateRoute><NuevaNoticia /></PrivateRoute>} />
+                <Route path="/admin/editar-noticia/:id" element={<PrivateRoute><EditarNoticia /></PrivateRoute>} />
+                <Route path="/admin/galeria" element={<PrivateRoute><AdminGaleria /></PrivateRoute>} />
+                <Route path="/admin/entrenadores" element={<PrivateRoute><AdminEntrenadores /></PrivateRoute>} />
+                <Route path="/admin/textos-quienes-somos" element={<PrivateRoute><AdminTextoQuienesSomos /></PrivateRoute>} />
+                <Route path="/admin/actividades" element={<PrivateRoute><AdminActividades /></PrivateRoute>} />
+                <Route path="/admin/categorias" element={<PrivateRoute><AdminCategorias /></PrivateRoute>} />
+                <Route path="/admin/torneos" element={<PrivateRoute><AdminTorneos /></PrivateRoute>} />
+                <Route path="/admin/textos-que-hacemos" element={<PrivateRoute><AdminTextoQueHacemos /></PrivateRoute>} />
+                <Route path="/admin/sponsors" element={<PrivateRoute><AdminSponsors /></PrivateRoute>} />
+                <Route path="/admin/quick-links" element={<PrivateRoute><AdminQuickLinks /></PrivateRoute>} />
+                <Route path="/admin/textos-home" element={<PrivateRoute><AdminTextoHome /></PrivateRoute>} />
               </Route>
             </Routes>
           </Suspense>

@@ -12,6 +12,7 @@ const iconMap = {
 };
 
 const QueHacemos = () => {
+  console.log('📄 [Page Load] Renderizando la página: QueHacemos');
   const [actividades, setActividades] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [torneos, setTorneos] = useState([]);

@@ -11,6 +11,7 @@ const iconMap = {
 };
 
 const AdminQuickLinks = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminQuickLinks');
   const [quickLinks, setQuickLinks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

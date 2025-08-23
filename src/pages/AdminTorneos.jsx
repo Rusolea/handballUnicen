@@ -4,6 +4,7 @@ import { getTorneos, createTorneo, updateTorneo, deleteTorneo } from '../service
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 const AdminTorneos = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminTorneos');
   const [torneos, setTorneos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

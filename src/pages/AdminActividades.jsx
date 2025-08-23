@@ -12,6 +12,7 @@ const iconMap = {
 };
 
 const AdminActividades = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminActividades');
   const [actividades, setActividades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

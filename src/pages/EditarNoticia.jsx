@@ -5,6 +5,7 @@ import { ArrowLeft, Upload, Plus, X, Trash2, AlertTriangle, Loader } from 'lucid
 import imageCompression from 'browser-image-compression';
 
 const EditarNoticia = () => {
+  console.log('📄 [Page Load] Renderizando la página: EditarNoticia');
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);

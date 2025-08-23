@@ -1,5 +1,5 @@
-import { db } from './firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { getDb } from './firebase'; // <-- CAMBIO
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const USERS_COLLECTION = 'users';
 
@@ -10,27 +10,24 @@ const USERS_COLLECTION = 'users';
  * @returns {Promise<object>} El perfil completo del usuario desde Firestore.
  */
 export const ensureUserProfile = async (firebaseUser) => {
+  const db = getDb(); // <-- CAMBIO
   if (!firebaseUser) return null;
 
-  const userRef = doc(db, USERS_COLLECTION, firebaseUser.uid);
-  const docSnap = await getDoc(userRef);
+  const userDocRef = doc(db, USERS_COLLECTION, firebaseUser.uid);
+  const userDocSnap = await getDoc(userDocRef);
 
-  if (!docSnap.exists()) {
-    // El usuario no tiene un perfil, lo creamos
-    const { displayName, email, photoURL, uid } = firebaseUser;
-    await setDoc(userRef, {
-      uid,
-      displayName,
-      email,
-      photoURL,
-      role: 'viewer', // Rol por defecto
-      createdAt: serverTimestamp(),
-    });
+  if (userDocSnap.exists()) {
+    return userDocSnap.data();
+  } else {
+    const newUserProfile = {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      role: 'user', // Rol por defecto
+      createdAt: new Date(),
+    };
+    await setDoc(userDocRef, newUserProfile);
+    return newUserProfile;
   }
-
-  // Devolvemos el perfil fresco desde la base de datos
-  const freshDoc = await getDoc(userRef);
-  return { id: freshDoc.id, ...freshDoc.data() };
 };
 
 /**
@@ -40,6 +37,7 @@ export const ensureUserProfile = async (firebaseUser) => {
  */
 export const getUserProfile = async (uid) => {
   if (!uid) return null;
+  const db = getDb(); // <-- Add this line
   const userRef = doc(db, USERS_COLLECTION, uid);
   const docSnap = await getDoc(userRef);
   return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;

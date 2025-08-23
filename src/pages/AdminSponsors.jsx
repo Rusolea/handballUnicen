@@ -1,10 +1,11 @@
 // src/pages/AdminSponsors.jsx
 import { useState, useEffect } from 'react';
 import { getSponsors, createSponsor, updateSponsor, deleteSponsor } from '../services/sponsorsService';
-import { uploadImage } from '../services/newsService';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { PlusCircle, Edit, Trash2, Loader, Heart } from 'lucide-react';
 
 const AdminSponsors = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminSponsors');
   const [sponsors, setSponsors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

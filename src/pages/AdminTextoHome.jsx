@@ -4,6 +4,7 @@ import { getPaginaHome, updatePaginaHome } from '../services/homeService';
 import { Save, PlusCircle, Trash2 } from 'lucide-react';
 
 const AdminTextoHome = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminTextoHome');
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);

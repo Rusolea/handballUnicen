@@ -4,6 +4,7 @@ import { getPaginaQuienesSomos, getEntrenadores, getGaleria } from '../services/
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const QuienesSomos = () => {
+  console.log('📄 [Page Load] Renderizando la página: QuienesSomos');
   const [textos, setTextos] = useState({});
   const [entrenadores, setEntrenadores] = useState([]);
   const [galeria, setGaleria] = useState([]);

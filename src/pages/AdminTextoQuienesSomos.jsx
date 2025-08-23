@@ -4,6 +4,7 @@ import { getPaginaQuienesSomos, updatePaginaQuienesSomos } from '../services/qui
 import { Save } from 'lucide-react';
 
 const AdminTextoQuienesSomos = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminTextoQuienesSomos');
   const [formData, setFormData] = useState({
     tituloHistoria: '',
     parrafoHistoria1: '',

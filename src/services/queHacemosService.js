@@ -1,5 +1,5 @@
 // services/queHacemosService.js
-import { db } from './firebase';
+import { getDb } from './firebase';
 import {
   collection,
   getDocs,
@@ -24,45 +24,49 @@ const PAGINAS_COLLECTION = 'paginas'; // Reutilizamos la colección de páginas
 // --- SERVICIOS PARA ACTIVIDADES ---
 
 export const getActividades = async () => {
+  const db = getDb();
   const q = query(collection(db, ACTIVIDADES_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const createActividad = (data) => addDoc(collection(db, ACTIVIDADES_COLLECTION), { ...data, createdAt: serverTimestamp() });
-export const updateActividad = (id, data) => updateDoc(doc(db, ACTIVIDADES_COLLECTION, id), data);
-export const deleteActividad = (id) => deleteDoc(doc(db, ACTIVIDADES_COLLECTION, id));
+export const createActividad = (data) => addDoc(collection(getDb(), ACTIVIDADES_COLLECTION), { ...data, createdAt: serverTimestamp() });
+export const updateActividad = (id, data) => updateDoc(doc(getDb(), ACTIVIDADES_COLLECTION, id), data);
+export const deleteActividad = (id) => deleteDoc(doc(getDb(), ACTIVIDADES_COLLECTION, id));
 
 
 // --- SERVICIOS PARA CATEGORÍAS ---
 
 export const getCategorias = async () => {
+  const db = getDb();
   const q = query(collection(db, CATEGORIAS_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const createCategoria = (data) => addDoc(collection(db, CATEGORIAS_COLLECTION), { ...data, createdAt: serverTimestamp() });
-export const updateCategoria = (id, data) => updateDoc(doc(db, CATEGORIAS_COLLECTION, id), data);
-export const deleteCategoria = (id) => deleteDoc(doc(db, CATEGORIAS_COLLECTION, id));
+export const createCategoria = (data) => addDoc(collection(getDb(), CATEGORIAS_COLLECTION), { ...data, createdAt: serverTimestamp() });
+export const updateCategoria = (id, data) => updateDoc(doc(getDb(), CATEGORIAS_COLLECTION, id), data);
+export const deleteCategoria = (id) => deleteDoc(doc(getDb(), CATEGORIAS_COLLECTION, id));
 
 
 // --- SERVICIOS PARA TORNEOS ---
 
 export const getTorneos = async () => {
+  const db = getDb();
   const q = query(collection(db, TORNEOS_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const createTorneo = (data) => addDoc(collection(db, TORNEOS_COLLECTION), { ...data, createdAt: serverTimestamp() });
-export const updateTorneo = (id, data) => updateDoc(doc(db, TORNEOS_COLLECTION, id), data);
-export const deleteTorneo = (id) => deleteDoc(doc(db, TORNEOS_COLLECTION, id));
+export const createTorneo = (data) => addDoc(collection(getDb(), TORNEOS_COLLECTION), { ...data, createdAt: serverTimestamp() });
+export const updateTorneo = (id, data) => updateDoc(doc(getDb(), TORNEOS_COLLECTION, id), data);
+export const deleteTorneo = (id) => deleteDoc(doc(getDb(), TORNEOS_COLLECTION, id));
 
 
 // --- SERVICIOS PARA TEXTOS DE LA PÁGINA ---
 
 export const getPaginaQueHacemos = async () => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'queHacemos');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
@@ -95,6 +99,7 @@ export const getPaginaQueHacemos = async () => {
 };
 
 export const updatePaginaQueHacemos = (data) => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'queHacemos');
   return setDoc(docRef, data, { merge: true }); // Crea o actualiza
 };
@@ -134,15 +139,15 @@ export const seedQueHacemosData = async () => {
   const initialTextos = await getPaginaQueHacemos(); // Usamos los textos por defecto del get
 
   try {
-    const batch = writeBatch(db);
+    const batch = writeBatch(getDb());
     let operationsCount = 0;
 
     const seedCollection = async (collectionName, initialData) => {
-      const collectionRef = collection(db, collectionName);
+      const collectionRef = collection(getDb(), collectionName);
       const snapshot = await getDocs(query(collectionRef));
       if (snapshot.empty) {
         initialData.forEach(item => {
-          const docRef = doc(collection(db, collectionName));
+          const docRef = doc(collection(getDb(), collectionName));
           batch.set(docRef, item);
           operationsCount++;
         });
@@ -155,7 +160,7 @@ export const seedQueHacemosData = async () => {
     await seedCollection(CATEGORIAS_COLLECTION, initialCategorias);
     await seedCollection(TORNEOS_COLLECTION, initialTorneos);
 
-    const textosDocRef = doc(db, PAGINAS_COLLECTION, 'queHacemos');
+    const textosDocRef = doc(getDb(), PAGINAS_COLLECTION, 'queHacemos');
     batch.set(textosDocRef, initialTextos, { merge: true });
     operationsCount++;
 

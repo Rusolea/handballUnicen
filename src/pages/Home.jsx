@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getQuickLinks, getPaginaHome } from '../services/homeService';
-import { Loader, Calendar, Users, Trophy, Newspaper } from 'lucide-react'; // <-- Añadir Loader
-import handballHero from '../assets/handball-hero-optimized.webp';
+import { Loader, Calendar, Users, Trophy, Newspaper } from 'lucide-react';
+import handballHero from '../assets/handball-hero-optimized.jpg';
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const iconMap = {
@@ -13,6 +13,7 @@ const iconMap = {
 };
 
 const Home = () => {
+  console.log('📄 [Page Load] Renderizando la página: Home');
   const [quickLinks, setQuickLinks] = useState([]);
   const [textos, setTextos] = useState({});
   const [loading, setLoading] = useState(true);

@@ -1,10 +1,11 @@
 // src/pages/AdminEntrenadores.jsx
 import { useState, useEffect } from 'react';
 import { getEntrenadores, createEntrenador, updateEntrenador, deleteEntrenador } from '../services/quienesSomosService';
-import { uploadImage } from '../services/newsService'; // <-- Importar uploadImage
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { PlusCircle, Edit, Trash2, Loader, User } from 'lucide-react'; // Añadidos Loader y User
 
 const AdminEntrenadores = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminEntrenadores');
   const [entrenadores, setEntrenadores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

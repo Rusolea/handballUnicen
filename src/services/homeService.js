@@ -1,5 +1,5 @@
 // services/homeService.js
-import { db } from './firebase';
+import { getDb } from './firebase';
 import {
   collection,
   getDocs,
@@ -18,22 +18,25 @@ import {
 // --- COLECCIONES ---
 const QUICKLINKS_COLLECTION = 'home_quicklinks';
 const PAGINAS_COLLECTION = 'paginas';
+const NEWS_COLLECTION = 'noticias';
 
 // --- SERVICIOS PARA ACCESOS RÁPIDOS ---
 
 export const getQuickLinks = async () => {
+  const db = getDb();
   const q = query(collection(db, QUICKLINKS_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const createQuickLink = (data) => addDoc(collection(db, QUICKLINKS_COLLECTION), { ...data, createdAt: serverTimestamp() });
-export const updateQuickLink = (id, data) => updateDoc(doc(db, QUICKLINKS_COLLECTION, id), data);
-export const deleteQuickLink = (id) => deleteDoc(doc(db, QUICKLINKS_COLLECTION, id));
+export const createQuickLink = (data) => addDoc(collection(getDb(), QUICKLINKS_COLLECTION), { ...data, createdAt: serverTimestamp() });
+export const updateQuickLink = (id, data) => updateDoc(doc(getDb(), QUICKLINKS_COLLECTION, id), data);
+export const deleteQuickLink = (id) => deleteDoc(doc(getDb(), QUICKLINKS_COLLECTION, id));
 
 // --- SERVICIOS PARA TEXTOS DE LA PÁGINA ---
 
 export const getPaginaHome = async () => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'home');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
@@ -60,8 +63,16 @@ export const getPaginaHome = async () => {
 };
 
 export const updatePaginaHome = (data) => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'home');
   return setDoc(docRef, data, { merge: true }); // Crea o actualiza
+};
+
+export const getDashboardStats = async () => {
+  const db = getDb();
+  const noticiasQuery = query(collection(db, NEWS_COLLECTION));
+  const querySnapshot = await getDocs(noticiasQuery);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
 // --- FUNCIÓN DE SEEDING (CARGA INICIAL) ---
@@ -77,19 +88,19 @@ export const seedHomeData = async () => {
     const initialTextos = await getPaginaHome();
 
     try {
-        const batch = writeBatch(db);
+        const batch = writeBatch(getDb());
         let operationsCount = 0;
 
-        const quickLinksSnapshot = await getDocs(query(collection(db, QUICKLINKS_COLLECTION)));
+        const quickLinksSnapshot = await getDocs(query(collection(getDb(), QUICKLINKS_COLLECTION)));
         if (quickLinksSnapshot.empty) {
             initialQuickLinks.forEach(item => {
-                const docRef = doc(collection(db, QUICKLINKS_COLLECTION));
+                const docRef = doc(collection(getDb(), QUICKLINKS_COLLECTION));
                 batch.set(docRef, item);
                 operationsCount++;
             });
         }
 
-        const textosDocRef = doc(db, PAGINAS_COLLECTION, 'home');
+        const textosDocRef = doc(getDb(), PAGINAS_COLLECTION, 'home');
         batch.set(textosDocRef, initialTextos, { merge: true });
         operationsCount++;
 

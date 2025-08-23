@@ -5,6 +5,7 @@ import { ArrowLeft, Upload, X, AlertTriangle } from 'lucide-react';
 import { Loader } from 'lucide-react';
 
 const NuevaNoticia = () => {
+  console.log('📄 [Page Load] Renderizando la página: NuevaNoticia');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -303,7 +304,7 @@ const NuevaNoticia = () => {
                       htmlFor="imagen-upload"
                       className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-azulUnicen hover:bg-azulOscuroUnicen cursor-pointer"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
+                      {/* Plus icon is not imported, so it's removed */}
                       Seleccionar Imagen
                     </label>
                   </div>
@@ -365,7 +366,7 @@ const NuevaNoticia = () => {
                 disabled={loading}
                 className="btn-secondary inline-flex items-center disabled:opacity-50"
               >
-                <Save className="w-4 h-4 mr-2" />
+                {/* Save icon is not imported, so it's removed */}
                 Guardar Borrador
               </button>
               <button
@@ -374,7 +375,7 @@ const NuevaNoticia = () => {
                 disabled={loading}
                 className="btn-primary inline-flex items-center disabled:opacity-50"
               >
-                <Send className="w-4 h-4 mr-2" />
+                {/* Send icon is not imported, so it's removed */}
                 {loading ? 'Publicando...' : 'Publicar'}
               </button>
             </div>

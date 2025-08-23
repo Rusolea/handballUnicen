@@ -4,6 +4,7 @@ import { getNewsById } from '../services/newsService'; // Asegúrate que el impo
 import { Calendar, ArrowLeft, Users, Trophy, Loader } from 'lucide-react';
 
 const NoticiaDetalle = () => {
+  console.log('📄 [Page Load] Renderizando la página: NoticiaDetalle');
   const [noticia, setNoticia] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

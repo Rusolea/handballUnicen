@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminLogin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

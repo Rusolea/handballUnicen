@@ -1,7 +1,7 @@
 // contexts/AuthContext.jsx
 
 import { useState, useEffect } from 'react';
-import { auth, db } from '../services/firebase';
+import { getAuthInstance, getDb } from '../services/firebase'; // <-- CAMBIO
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
@@ -14,6 +14,8 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const login = async (email, password) => {
+    const auth = getAuthInstance(); // <-- CAMBIO
+    const db = getDb(); // <-- CAMBIO
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
@@ -37,11 +39,14 @@ export default function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    const auth = getAuthInstance(); // <-- CAMBIO
     setCurrentUser(null);
     return signOut(auth);
   };
 
   useEffect(() => {
+    const auth = getAuthInstance(); // <-- CAMBIO
+    const db = getDb(); // <-- CAMBIO
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const userDocRef = doc(db, 'users', firebaseUser.uid);

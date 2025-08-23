@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import logoHandballUnicen from '../assets/logohandballUnicen.png';
+import logoUnicenUrl from '../assets/logohandballUnicen.svg'; // Importar como URL
 
 const Navbar = () => {
+  console.log('⬆️ [Navbar] Renderizando (carga inmediata).');
   const [isOpen, setIsOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
-  // console.log('➡️ [Navbar] Renderizando. El valor de currentUser es:', currentUser);
+  
+  // Obtenemos el objeto de contexto completo de forma segura
+  const authContext = useAuth(); 
+  const currentUser = authContext ? authContext.currentUser : null;
+  const logout = authContext ? authContext.logout : () => {};
+
   const location = useLocation();
 
   const navigation = [
@@ -33,9 +38,9 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <img 
-                src={logoHandballUnicen} 
-                alt="Handball Unicen Logo" 
-                className="w-12 h-12 object-contain"
+                src={logoUnicenUrl} 
+                alt="Logo de Handball Unicen"
+                className="w-12 h-12"
               />
               <span className="ml-3 text-xl font-bold text-white">
                 Handball Unicen

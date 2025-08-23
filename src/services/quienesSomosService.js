@@ -1,5 +1,5 @@
 // services/quienesSomosService.js
-import { db } from './firebase';
+import { getDb } from './firebase';
 import {
   collection,
   getDocs,
@@ -11,7 +11,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
-  setDoc, // <-- 1. Importar setDoc
+  setDoc,
 } from 'firebase/firestore';
 // Importamos las funciones de manejo de imágenes desde el nuevo adminService
 import { deleteImage } from './adminService';
@@ -24,12 +24,14 @@ const PAGINAS_COLLECTION = 'paginas';
 // --- SERVICIOS PARA LA GALERÍA ---
 
 export const getGaleria = async () => {
+  const db = getDb();
   const q = query(collection(db, GALERIA_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const createGaleriaItem = async (data) => {
+  const db = getDb();
   return addDoc(collection(db, GALERIA_COLLECTION), {
     ...data,
     createdAt: serverTimestamp(),
@@ -37,6 +39,7 @@ export const createGaleriaItem = async (data) => {
 };
 
 export const updateGaleriaItem = async (id, data) => {
+  const db = getDb();
   const docRef = doc(db, GALERIA_COLLECTION, id);
   return updateDoc(docRef, data);
 };
@@ -45,6 +48,7 @@ export const deleteGaleriaItem = async (id, imageUrl) => {
   if (imageUrl) {
     await deleteImage(imageUrl);
   }
+  const db = getDb();
   const docRef = doc(db, GALERIA_COLLECTION, id);
   return deleteDoc(docRef);
 };
@@ -52,12 +56,14 @@ export const deleteGaleriaItem = async (id, imageUrl) => {
 // --- SERVICIOS PARA EL CUERPO TÉCNICO ---
 
 export const getEntrenadores = async () => {
+  const db = getDb();
   const q = query(collection(db, CUERPO_TECNICO_COLLECTION), orderBy('orden', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const createEntrenador = async (data) => {
+  const db = getDb();
   return addDoc(collection(db, CUERPO_TECNICO_COLLECTION), {
     ...data,
     createdAt: serverTimestamp(),
@@ -65,6 +71,7 @@ export const createEntrenador = async (data) => {
 };
 
 export const updateEntrenador = async (id, data) => {
+  const db = getDb();
   const docRef = doc(db, CUERPO_TECNICO_COLLECTION, id);
   return updateDoc(docRef, data);
 };
@@ -73,6 +80,7 @@ export const deleteEntrenador = async (id, imageUrl) => {
   if (imageUrl && !imageUrl.includes('placeholder.com')) {
     await deleteImage(imageUrl);
   }
+  const db = getDb();
   const docRef = doc(db, CUERPO_TECNICO_COLLECTION, id);
   return deleteDoc(docRef);
 };
@@ -80,6 +88,7 @@ export const deleteEntrenador = async (id, imageUrl) => {
 // --- SERVICIOS PARA LOS TEXTOS DE LA PÁGINA ---
 
 export const getPaginaQuienesSomos = async () => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'quienesSomos');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
@@ -98,9 +107,10 @@ export const getPaginaQuienesSomos = async () => {
 };
 
 export const updatePaginaQuienesSomos = async (data) => {
+  const db = getDb();
   const docRef = doc(db, PAGINAS_COLLECTION, 'quienesSomos');
   // Usamos setDoc con la opción { merge: true }.
   // Esto crea el documento si no existe, y lo actualiza si ya existe.
   // Es la solución perfecta para este caso de "crear o actualizar".
-  return setDoc(docRef, data, { merge: true }); // <-- 2. Cambiar updateDoc por setDoc
+  return setDoc(docRef, data, { merge: true });
 };

@@ -1,18 +1,24 @@
 // src/services/adminService.js
-import { db } from './firebase';
+import { getDb } from './firebase'; // <-- Importa la función
 import { createClient } from '@supabase/supabase-js';
 import { collection, addDoc, serverTimestamp, getDocs, query, orderBy, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import imageCompression from 'browser-image-compression';
 
 const NEWS_COLLECTION = 'noticias';
 
-// --- CONFIGURACIÓN DE SUPABASE ---
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
+let supabase;
+let supabaseAdmin;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+const getSupabaseClients = () => {
+  if (!supabase) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+  }
+  return { supabase, supabaseAdmin };
+}
 
 // --- FUNCIONES DE STORAGE ---
 export const uploadImage = async (file) => {
@@ -30,6 +36,7 @@ export const uploadImage = async (file) => {
     const sanitizedFileNameBase = fileNameBase.toLowerCase().replace(/\s+/g, '_').replace(/[^\w-]/g, '');
     const fileName = `${Date.now()}_${sanitizedFileNameBase}.${fileExt}`;
     const bucketName = 'imagenes-noticias';
+    const { supabase, supabaseAdmin } = getSupabaseClients();
     const { error } = await supabaseAdmin.storage.from(bucketName).upload(fileName, compressedFile);
     if (error) throw error;
     const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(fileName);
@@ -46,6 +53,7 @@ export const deleteImage = async (imageUrl) => {
     const bucketName = 'imagenes-noticias';
     const fileName = imageUrl.split('/').pop();
     if (fileName) {
+      const { supabaseAdmin } = getSupabaseClients();
       await supabaseAdmin.storage.from(bucketName).remove([fileName]);
     }
   } catch (error) {
@@ -55,24 +63,25 @@ export const deleteImage = async (imageUrl) => {
 
 // --- FUNCIONES DE FIRESTORE PARA ADMIN ---
 export const createNews = async (noticiaData) => {
+  const db = getDb(); // <-- Llama a la función AQUÍ
   const dataWithTimestamps = { ...noticiaData, createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
   return addDoc(collection(db, NEWS_COLLECTION), dataWithTimestamps);
 };
 
 export const getAllNewsAdmin = async () => {
-  const q = query(collection(db, NEWS_COLLECTION), orderBy('fecha', 'desc'));
+  const q = query(collection(getDb(), NEWS_COLLECTION), orderBy('fecha', 'desc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
 export const getNewsByIdForAdmin = async (id) => {
-    const docRef = doc(db, NEWS_COLLECTION, id);
+    const docRef = doc(getDb(), NEWS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
     return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
 };
 
 export const updateNews = async (id, dataToUpdate) => {
-  const docRef = doc(db, NEWS_COLLECTION, id);
+  const docRef = doc(getDb(), NEWS_COLLECTION, id);
   const dataWithTimestamp = { ...dataToUpdate, updatedAt: serverTimestamp() };
   return updateDoc(docRef, dataWithTimestamp);
 };
@@ -82,6 +91,6 @@ export const deleteNews = async (id) => {
   if (noticiaToDelete?.imagenUrl) {
     await deleteImage(noticiaToDelete.imagenUrl);
   }
-  const docRef = doc(db, NEWS_COLLECTION, id);
+  const docRef = doc(getDb(), NEWS_COLLECTION, id);
   return deleteDoc(docRef);
 }; 

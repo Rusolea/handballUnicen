@@ -1,10 +1,11 @@
 // src/pages/AdminGaleria.jsx
 import { useState, useEffect } from 'react';
 import { getGaleria, createGaleriaItem, updateGaleriaItem, deleteGaleriaItem } from '../services/quienesSomosService';
-import { uploadImage } from '../services/newsService';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { PlusCircle, Edit, Trash2, Loader, Image as ImageIcon } from 'lucide-react'; // Añadidos Loader e ImageIcon
 
 const AdminGaleria = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminGaleria');
   const [galeria, setGaleria] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

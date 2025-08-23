@@ -4,6 +4,7 @@ import { getSponsors } from '../services/sponsorsService';
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const Sponsors = () => {
+  console.log('📄 [Page Load] Renderizando la página: Sponsors');
   const [sponsorsList, setSponsorsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -4,6 +4,7 @@ import { getCategorias, createCategoria, updateCategoria, deleteCategoria } from
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 const AdminCategorias = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminCategorias');
   const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

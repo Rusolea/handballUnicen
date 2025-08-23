@@ -5,6 +5,7 @@ import { Calendar, Users, Trophy, Clock, ArrowRight, Loader } from 'lucide-react
 import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
 const Noticias = () => {
+  console.log('📄 [Page Load] Renderizando la página: Noticias');
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
 

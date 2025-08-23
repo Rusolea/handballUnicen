@@ -1,13 +1,11 @@
 import { createContext, useContext } from 'react';
 
-// 1. Create the context here
+// 1. Creamos el contexto aquí
 export const AuthContext = createContext(null);
 
-// 2. Create and export the custom hook to use the context
+// 2. Creamos y exportamos el hook personalizado para usar el contexto
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) { // Check against undefined is more robust
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  // Ya no lanzamos un error. Simplemente devolvemos el contexto.
+  // Si no hay Provider, el valor devuelto será 'null' (el valor por defecto de createContext).
+  return useContext(AuthContext);
 }; 

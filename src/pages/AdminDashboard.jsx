@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 
 const AdminDashboard = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminDashboard');
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser, logout } = useAuth();

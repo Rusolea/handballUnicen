@@ -4,6 +4,7 @@ import { getPaginaQueHacemos, updatePaginaQueHacemos } from '../services/queHace
 import { Save, PlusCircle, Trash2 } from 'lucide-react';
 
 const AdminTextoQueHacemos = () => {
+  console.log('📄 [Page Load] Renderizando la página: AdminTextoQueHacemos');
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
