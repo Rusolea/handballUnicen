@@ -1,7 +1,7 @@
 // src/pages/AdminGaleria.jsx
 import { useState, useEffect } from 'react';
-import { getGaleria, createGaleriaItem, updateGaleriaItem, deleteGaleriaItem } from '../services/quienesSomosService';
-import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { getGaleria } from '../services/quienesSomosService';
+import { createGaleriaItem, updateGaleriaItem, deleteGaleriaItem, uploadImage } from '../services/adminService';
 import { PlusCircle, Edit, Trash2, Loader, Image as ImageIcon } from 'lucide-react'; // Añadidos Loader e ImageIcon
 
 const AdminGaleria = () => {

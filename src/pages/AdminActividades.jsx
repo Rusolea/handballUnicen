@@ -1,6 +1,7 @@
 // src/pages/AdminActividades.jsx
 import { useState, useEffect } from 'react';
-import { getActividades, createActividad, updateActividad, deleteActividad } from '../services/queHacemosService';
+import { getActividades } from '../services/queHacemosService';
+import { createActividad, updateActividad, deleteActividad } from '../services/adminService';
 import { PlusCircle, Edit, Trash2, Target, Trophy, Users, Calendar, Clock, MapPin } from 'lucide-react';
 
 // Mapeo de strings a componentes de íconos

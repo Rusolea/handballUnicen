@@ -1,6 +1,7 @@
 // src/pages/AdminQuickLinks.jsx
 import { useState, useEffect } from 'react';
-import { getQuickLinks, createQuickLink, updateQuickLink, deleteQuickLink } from '../services/homeService';
+import { getQuickLinks } from '../services/homeService';
+import { createQuickLink, updateQuickLink, deleteQuickLink } from '../services/adminService';
 import { PlusCircle, Edit, Trash2, Calendar, Users, Trophy, Newspaper } from 'lucide-react';
 
 const iconMap = {

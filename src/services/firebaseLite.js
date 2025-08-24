@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp as getFirebaseApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore/lite";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -17,10 +17,11 @@ const getApp = () => {
   return getFirebaseApp();
 };
 
-let db;
-export const getDb = () => {
-  if (!db) {
-    db = getFirestore(getApp());
+let dbLite;
+export const getDbLite = () => {
+  if (!dbLite) {
+    dbLite = getFirestore(getApp());
   }
-  return db;
+  return dbLite;
 };
+

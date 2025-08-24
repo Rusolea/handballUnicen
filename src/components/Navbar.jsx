@@ -40,7 +40,9 @@ const Navbar = () => {
               <img 
                 src={logoUnicenUrl} 
                 alt="Logo de Handball Unicen"
-                className="w-12 h-12"
+                className="w-12 h-12" 
+                width="48" 
+                height="48"
               />
               <span className="ml-3 text-xl font-bold text-white">
                 Handball Unicen

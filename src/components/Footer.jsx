@@ -39,7 +39,7 @@ const Footer = () => {
               <img 
                 src={logoUnicenUrl} 
                 alt="Logo Handball Unicen" 
-                className="h-12 w-auto mr-3"
+                className="h-12 w-12 mr-3"
                 width="48"
                 height="48"
               />
@@ -72,7 +72,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Nuestros Sponsors</h3>
             
             {/* Container with overflow hidden */}
-            <div className="relative w-full overflow-hidden">
+            <div className="relative w-full overflow-hidden h-20">
               
               {/* Animated scrolling strip */}
               <div className="flex animate-scroll">

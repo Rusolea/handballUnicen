@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getQuickLinks, getPaginaHome } from '../services/homeService';
 import { Loader, Calendar, Users, Trophy, Newspaper } from 'lucide-react';
-import handballHero from '../assets/handball-hero-optimized.jpg';
+import handballHeroJpg from '../assets/handball-hero-optimized.jpg';
+import handballHeroWebp from '../assets/handball-hero-optimized.jpg?format=webp';
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
 
 const iconMap = {
@@ -56,13 +57,18 @@ const Home = () => {
       {/* Hero Section - OPTIMIZED */}
       <section className="relative h-96 md:h-[500px] w-full text-white">
         {/* The image as a high-priority img tag */}
-        <img
-          src={handballHero}
-          alt="Equipo de Handball Unicen en la cancha"
-          width="1090"
-          height="726"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <picture>
+          <source srcSet={handballHeroWebp} type="image/webp" />
+          <img
+            src={handballHeroJpg}
+            alt="Equipo de Handball Unicen en la cancha"
+            width="1090"
+            height="726"
+            fetchpriority="high"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </picture>
 
         {/* Overlay for text readability */}
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>

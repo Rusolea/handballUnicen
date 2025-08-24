@@ -1,9 +1,9 @@
 // contexts/AuthContext.jsx
 
 import { useState, useEffect } from 'react';
-import { getAuthInstance, getDb } from '../services/firebase'; // <-- CAMBIO
+import { getDb } from '../services/firebase';
+import { getAuthInstance } from '../services/firebaseAuth';
 import { doc, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 // Import the context from our new hook file
 import { AuthContext } from '../hooks/useAuth';
@@ -14,8 +14,9 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const login = async (email, password) => {
-    const auth = getAuthInstance(); // <-- CAMBIO
-    const db = getDb(); // <-- CAMBIO
+    const auth = getAuthInstance();
+    const db = getDb();
+    const { signInWithEmailAndPassword } = await import('firebase/auth');
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
@@ -32,6 +33,7 @@ export default function AuthProvider({ children }) {
         setCurrentUser(userProfile);
         return userProfile;
       } else {
+        const { signOut } = await import('firebase/auth');
         await signOut(auth);
         throw new Error('Usuario no autorizado.');
       }
@@ -39,36 +41,39 @@ export default function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    const auth = getAuthInstance(); // <-- CAMBIO
+    const auth = getAuthInstance();
     setCurrentUser(null);
-    return signOut(auth);
+    return import('firebase/auth').then(({ signOut }) => signOut(auth));
   };
 
   useEffect(() => {
-    const auth = getAuthInstance(); // <-- CAMBIO
-    const db = getDb(); // <-- CAMBIO
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const userDocRef = doc(db, 'users', firebaseUser.uid);
-        const userDocSnap = await getDoc(userDocRef);
-        if (userDocSnap.exists()) {
-          setCurrentUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            role: userDocSnap.data().role,
-          });
+    const auth = getAuthInstance();
+    const db = getDb();
+    let unsubscribe = () => {};
+    import('firebase/auth').then(({ onAuthStateChanged, signOut }) => {
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        if (firebaseUser) {
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setCurrentUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              role: userDocSnap.data().role,
+            });
+          } else {
+            // If user exists in Auth but not in Firestore, log them out.
+            setCurrentUser(null);
+            await signOut(auth);
+          }
         } else {
-          // If user exists in Auth but not in Firestore, log them out.
           setCurrentUser(null);
-          await signOut(auth);
         }
-      } else {
-        setCurrentUser(null);
-      }
-      setLoading(false);
+        setLoading(false);
+      });
     });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   const value = {

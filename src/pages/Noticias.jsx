@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // <-- Importar Link
-import { getPublishedNews, getNewsById } from '../services/newsService';
+import { getPublishedNewsPage } from '../services/newsService';
 import { Calendar, Users, Trophy, Clock, ArrowRight, Loader } from 'lucide-react'; // <-- Importar ArrowRight
 import ContactoWhatsapp from '../components/ContactoWhatsapp'; // <-- Importar componente
 
@@ -8,12 +8,16 @@ const Noticias = () => {
   console.log('📄 [Page Load] Renderizando la página: Noticias');
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const fetchNoticias = async () => {
+    const loadFirstPage = async () => {
       try {
-        const noticiasData = await getPublishedNews(); // <-- Usando el servicio
-        setNoticias(noticiasData);
+        const { items, nextCursor, hasMore } = await getPublishedNewsPage({ pageSize: 6 });
+        setNoticias(items);
+        setCursor(nextCursor);
+        setHasMore(hasMore);
       } catch (error) {
         console.error('Error fetching noticias:', error);
       } finally {
@@ -21,8 +25,20 @@ const Noticias = () => {
       }
     };
 
-    fetchNoticias();
+    loadFirstPage();
   }, []);
+
+  const loadMore = async () => {
+    if (!hasMore || !cursor) return;
+    try {
+      const { items, nextCursor, hasMore: more } = await getPublishedNewsPage({ pageSize: 6, cursor });
+      setNoticias(prev => [...prev, ...items]);
+      setCursor(nextCursor);
+      setHasMore(more);
+    } catch (error) {
+      console.error('Error loading more noticias:', error);
+    }
+  };
 
   const formatDate = (date) => {
     if (!date) return '';
@@ -143,6 +159,11 @@ const Noticias = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+          {hasMore && (
+            <div className="mt-10 flex justify-center">
+              <button onClick={loadMore} className="btn-secondary px-6 py-2">Cargar más</button>
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 // src/pages/AdminTorneos.jsx
 import { useState, useEffect } from 'react';
-import { getTorneos, createTorneo, updateTorneo, deleteTorneo } from '../services/queHacemosService';
+import { getTorneos } from '../services/queHacemosService';
+import { createTorneo, updateTorneo, deleteTorneo } from '../services/adminService';
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 const AdminTorneos = () => {

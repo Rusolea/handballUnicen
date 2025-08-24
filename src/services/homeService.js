@@ -1,19 +1,13 @@
 // services/homeService.js
-import { getDb } from './firebase';
+import { getDbLite as getDb } from './firebaseLite';
 import {
   collection,
   getDocs,
   doc,
   getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
   orderBy,
   query,
-  setDoc,
-  serverTimestamp,
-  writeBatch,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 
 // --- COLECCIONES ---
 const QUICKLINKS_COLLECTION = 'home_quicklinks';
@@ -28,10 +22,6 @@ export const getQuickLinks = async () => {
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
-
-export const createQuickLink = (data) => addDoc(collection(getDb(), QUICKLINKS_COLLECTION), { ...data, createdAt: serverTimestamp() });
-export const updateQuickLink = (id, data) => updateDoc(doc(getDb(), QUICKLINKS_COLLECTION, id), data);
-export const deleteQuickLink = (id) => deleteDoc(doc(getDb(), QUICKLINKS_COLLECTION, id));
 
 // --- SERVICIOS PARA TEXTOS DE LA PÁGINA ---
 
@@ -62,56 +52,9 @@ export const getPaginaHome = async () => {
   };
 };
 
-export const updatePaginaHome = (data) => {
-  const db = getDb();
-  const docRef = doc(db, PAGINAS_COLLECTION, 'home');
-  return setDoc(docRef, data, { merge: true }); // Crea o actualiza
-};
-
 export const getDashboardStats = async () => {
   const db = getDb();
   const noticiasQuery = query(collection(db, NEWS_COLLECTION));
   const querySnapshot = await getDocs(noticiasQuery);
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-};
-
-// --- FUNCIÓN DE SEEDING (CARGA INICIAL) ---
-
-export const seedHomeData = async () => {
-    const initialQuickLinks = [
-        { title: 'Próximos Partidos', description: 'Mira el calendario de partidos y torneos', icon: 'Calendar', href: '/noticias', color: 'bg-azulUnicen', orden: 1 },
-        { title: 'Nuestro Equipo', description: 'Conoce a los jugadores y entrenadores', icon: 'Users', href: '/quienes-somos', color: 'bg-verdeUnicen', orden: 2 },
-        { title: 'Torneos', description: 'Información sobre competencias y logros', icon: 'Trophy', href: '/que-hacemos', color: 'bg-limaUnicen', orden: 3 },
-        { title: 'Últimas Noticias', description: 'Mantente al día con las novedades del club', icon: 'Newspaper', href: '/noticias', color: 'bg-celesteUnicen', orden: 4 }
-    ];
-
-    const initialTextos = await getPaginaHome();
-
-    try {
-        const batch = writeBatch(getDb());
-        let operationsCount = 0;
-
-        const quickLinksSnapshot = await getDocs(query(collection(getDb(), QUICKLINKS_COLLECTION)));
-        if (quickLinksSnapshot.empty) {
-            initialQuickLinks.forEach(item => {
-                const docRef = doc(collection(getDb(), QUICKLINKS_COLLECTION));
-                batch.set(docRef, item);
-                operationsCount++;
-            });
-        }
-
-        const textosDocRef = doc(getDb(), PAGINAS_COLLECTION, 'home');
-        batch.set(textosDocRef, initialTextos, { merge: true });
-        operationsCount++;
-
-        if (operationsCount > 1) {
-            await batch.commit();
-            return { success: true, message: '¡Datos iniciales para el Home cargados!' };
-        } else {
-            return { success: false, message: 'Los datos iniciales del Home ya existen.' };
-        }
-    } catch (error) {
-        console.error("Error al cargar datos iniciales del Home: ", error);
-        return { success: false, message: `Error: ${error.message}` };
-    }
 };

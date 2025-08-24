@@ -1,7 +1,7 @@
 // src/pages/AdminEntrenadores.jsx
 import { useState, useEffect } from 'react';
-import { getEntrenadores, createEntrenador, updateEntrenador, deleteEntrenador } from '../services/quienesSomosService';
-import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { getEntrenadores } from '../services/quienesSomosService';
+import { createEntrenador, updateEntrenador, deleteEntrenador, uploadImage } from '../services/adminService';
 import { PlusCircle, Edit, Trash2, Loader, User } from 'lucide-react'; // Añadidos Loader y User
 
 const AdminEntrenadores = () => {

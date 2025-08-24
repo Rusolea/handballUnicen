@@ -1,6 +1,7 @@
 // src/pages/AdminTextoQueHacemos.jsx
 import { useState, useEffect } from 'react';
-import { getPaginaQueHacemos, updatePaginaQueHacemos } from '../services/queHacemosService';
+import { getPaginaQueHacemos } from '../services/queHacemosService';
+import { updatePaginaQueHacemos } from '../services/adminService';
 import { Save, PlusCircle, Trash2 } from 'lucide-react';
 
 const AdminTextoQueHacemos = () => {

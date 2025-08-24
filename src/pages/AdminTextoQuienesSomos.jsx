@@ -1,6 +1,7 @@
 // src/pages/AdminTextoQuienesSomos.jsx
 import { useState, useEffect } from 'react';
-import { getPaginaQuienesSomos, updatePaginaQuienesSomos } from '../services/quienesSomosService';
+import { getPaginaQuienesSomos } from '../services/quienesSomosService';
+import { updatePaginaQuienesSomos } from '../services/adminService';
 import { Save } from 'lucide-react';
 
 const AdminTextoQuienesSomos = () => {

@@ -1,6 +1,7 @@
 // src/pages/AdminCategorias.jsx
 import { useState, useEffect } from 'react';
-import { getCategorias, createCategoria, updateCategoria, deleteCategoria } from '../services/queHacemosService';
+import { getCategorias } from '../services/queHacemosService';
+import { createCategoria, updateCategoria, deleteCategoria } from '../services/adminService';
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 const AdminCategorias = () => {

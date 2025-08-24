@@ -1,7 +1,7 @@
 // src/pages/AdminSponsors.jsx
 import { useState, useEffect } from 'react';
-import { getSponsors, createSponsor, updateSponsor, deleteSponsor } from '../services/sponsorsService';
-import { uploadImage } from '../services/adminService'; // <-- Corregir la ruta de importación
+import { getSponsors } from '../services/sponsorsService';
+import { createSponsor, updateSponsor, deleteSponsor, uploadImage } from '../services/adminService';
 import { PlusCircle, Edit, Trash2, Loader, Heart } from 'lucide-react';
 
 const AdminSponsors = () => {
@@ -70,7 +70,7 @@ const AdminSponsors = () => {
     let finalLogoUrl = currentItem ? formData.logoUrl : '';
 
     if (imageFile) {
-      const uploadedUrl = await uploadImage(imageFile);
+      const uploadedUrl = await uploadImage(imageFile, { preset: 'logo' });
       if (uploadedUrl) {
         finalLogoUrl = uploadedUrl;
       } else {

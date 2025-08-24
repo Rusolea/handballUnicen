@@ -1,6 +1,7 @@
 // src/pages/AdminTextoHome.jsx
 import { useState, useEffect } from 'react';
-import { getPaginaHome, updatePaginaHome } from '../services/homeService';
+import { getPaginaHome } from '../services/homeService';
+import { updatePaginaHome } from '../services/adminService';
 import { Save, PlusCircle, Trash2 } from 'lucide-react';
 
 const AdminTextoHome = () => {
