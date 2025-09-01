@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getPaginaQueHacemos, getCategorias, getActividades, getTorneos } from '../services/queHacemosService';
 import { Loader, Target, Trophy, Users, Calendar, Clock, MapPin } from 'lucide-react'; // <-- Importar los íconos
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 // Mapeo de strings a componentes de íconos para renderizar dinámicamente
 const iconMap = {
@@ -52,11 +53,7 @@ const QueHacemos = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -125,7 +122,7 @@ const QueHacemos = () => {
       </section>
 
       {/* Categorías Section */}
-      <section className="py-16 bg-gray-50">
+      <section id="horarios" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

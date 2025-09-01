@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getNewsById } from '../services/newsService'; // Asegúrate que el import sea getNewsById
-import { Calendar, ArrowLeft, Users, Trophy, Loader } from 'lucide-react';
+import { getNewsById } from '../services/newsService';
+import { Calendar, ArrowLeft, Users, Trophy } from 'lucide-react';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const NoticiaDetalle = () => {
   console.log('📄 [Page Load] Renderizando la página: NoticiaDetalle');
@@ -15,7 +16,7 @@ const NoticiaDetalle = () => {
     const fetchNoticia = async () => {
       try {
         setLoading(true);
-        const data = await getNewsById(id); // Usa el nombre correcto de la función
+        const data = await getNewsById(id);
         if (data) {
           setNoticia(data);
         } else {
@@ -31,11 +32,9 @@ const NoticiaDetalle = () => {
     fetchNoticia();
   }, [id]);
 
-  // FIX 1: Función para formatear la fecha correctamente
   const formatDate = (date) => {
     if (!date) return 'Fecha no disponible';
     const d = date.toDate ? date.toDate() : new Date(date);
-    // Verificar si la fecha es válida después de la conversión
     if (isNaN(d.getTime())) {
         return 'Fecha inválida';
     }
@@ -46,12 +45,11 @@ const NoticiaDetalle = () => {
     });
   };
 
+  // Detecta si un string contiene HTML para elegir cómo renderizarlo
+  const isHTML = (s) => typeof s === 'string' && /<\/?[a-z][\s\S]*>/i.test(s);
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -88,32 +86,40 @@ const NoticiaDetalle = () => {
           <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">{noticia.titulo}</h1>
           <div className="flex items-center text-gray-500 text-sm">
             <Calendar className="w-4 h-4 mr-2" />
-            {/* Usamos la nueva función formatDate */}
             <span>Publicado el {formatDate(noticia.fecha)}</span>
           </div>
         </div>
 
-        {/* FIX 2: Renderizar el contenido que SÍ existe (resumen, rival, resultado) */}
+        {/* --- CONTENIDO DE LA NOTICIA --- */}
         <div className="prose prose-lg max-w-none text-gray-800">
-          <p className="lead font-semibold">{noticia.resumen}</p>
-          
+          {/* 1. Resumen: sin negrita y con saltos de línea */}
+          {noticia.resumen && (
+            <p className="whitespace-pre-line">{noticia.resumen}</p>
+          )}
+
           {noticia.rival && (
-            <div className="flex items-center text-gray-600 my-4">
+            <div className="flex items-center text-gray-600 my-4 not-prose">
               <Users className="w-5 h-5 mr-2" />
               <span>vs {noticia.rival}</span>
             </div>
           )}
           
           {noticia.resultado && (
-            <div className="flex items-center text-gray-600 my-4">
+            <div className="flex items-center text-gray-600 my-4 not-prose">
               <Trophy className="w-5 h-5 mr-2" />
               <span>Resultado: {noticia.resultado}</span>
             </div>
           )}
           
-          {/* AQUÍ IRÍA EL CONTENIDO PRINCIPAL SI EXISTIERA */}
+          {/* 2. Contenido Principal: respeta HTML o saltos de línea si es texto plano */}
           {noticia.contenido && (
-             <div dangerouslySetInnerHTML={{ __html: noticia.contenido }} />
+            isHTML(noticia.contenido)
+              // Si es HTML, se renderiza con "dangerouslySetInnerHTML"
+              ? <div className="prose prose-lg" dangerouslySetInnerHTML={{ __html: noticia.contenido }} />
+              // Si es texto plano, se divide por párrafos y se respetan saltos internos
+              : noticia.contenido.split(/\r?\n\r?\n/).map((p, i) => (
+                  <p key={i} className="whitespace-pre-line">{p}</p>
+                ))
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Youtube } from 'lucide-react'; // 1. Importar nuevos íconos
 import { useState, useEffect } from 'react';
 import { getSponsors } from '../services/sponsorsService';
 import logoUnicenUrl from '../assets/logohandballUnicen.svg'; // Importar como URL
@@ -50,8 +50,29 @@ const Footer = () => {
             </p>
             <div className="space-y-2 text-sm text-gray-300">
               <p className="flex items-start"><MapPin className="w-4 h-4 mr-2 mt-1 flex-shrink-0" /><span>Tandil, Buenos Aires, Argentina</span></p>
-              <p className="flex items-center"><Mail className="w-4 h-4 mr-2" /><span>handball.unicen@gmail.com</span></p>
+              <p className="flex items-center"><Mail className="w-4 h-4 mr-2" /><span>handbal.unicen@gmail.com</span></p>
               <p className="flex items-center"><Phone className="w-4 h-4 mr-2" /><span>+54 9 2494 24-4728</span></p>
+            </div>
+            {/* 2. Añadir sección de redes sociales */}
+            <div className="flex space-x-4 mt-6">
+              <a 
+                href="https://www.instagram.com/handballunicen/?hl=en" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram de Handball Unicen"
+                className="text-gray-300 hover:text-white transition-colors duration-300"
+              >
+                <Instagram className="w-6 h-6" />
+              </a>
+              <a 
+                href="https://www.youtube.com/@HandballUnicen" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Canal de YouTube de Handball Unicen"
+                className="text-gray-300 hover:text-white transition-colors duration-300"
+              >
+                <Youtube className="w-6 h-6" />
+              </a>
             </div>
           </div>
 

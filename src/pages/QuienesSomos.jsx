@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Users, Award, Target, User, Loader } from 'lucide-react'; // <-- Añadir Loader
 import { getPaginaQuienesSomos, getEntrenadores, getGaleria } from '../services/quienesSomosService';
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const QuienesSomos = () => {
   console.log('📄 [Page Load] Renderizando la página: QuienesSomos');
@@ -47,11 +48,7 @@ const QuienesSomos = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {

@@ -9,7 +9,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { AuthContext } from '../hooks/useAuth';
 import LoadingSpinner from '../components/LoadingSpinner'; // <-- Importar el spinner
 
-export default function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 

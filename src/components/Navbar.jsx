@@ -19,6 +19,7 @@ const Navbar = () => {
     { name: 'Inicio', href: '/' },
     { name: 'Quiénes Somos', href: '/quienes-somos' },
     { name: 'Qué Hacemos', href: '/que-hacemos' },
+    { name: 'Horarios', href: '/que-hacemos#horarios' },
     { name: 'Sponsors', href: '/sponsors' },
     { name: 'Noticias', href: '/noticias' },
   ];

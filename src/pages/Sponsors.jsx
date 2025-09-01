@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Heart, Loader } from 'lucide-react'; // <-- Añadir Loader
 import { getSponsors } from '../services/sponsorsService';
 import ContactoWhatsapp from '../components/ContactoWhatsapp';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Sponsors = () => {
   console.log('📄 [Page Load] Renderizando la página: Sponsors');
@@ -28,11 +29,7 @@ const Sponsors = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader className="w-12 h-12 text-azulUnicen animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {

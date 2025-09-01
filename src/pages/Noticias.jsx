@@ -146,7 +146,7 @@ const Noticias = () => {
                       </div>
                     )}
                     
-                    <p className="text-gray-700 mb-4 line-clamp-3">
+                    <p className="text-gray-700 mb-4 line-clamp-3 whitespace-pre-line">
                       {noticia.resumen}
                     </p>
                     
