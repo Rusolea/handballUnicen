@@ -22,6 +22,10 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    modulePreload: {
+      polyfill: false,
+      resolveDependencies: () => [],
+    },
   },
   server: {
     port: 5173,
