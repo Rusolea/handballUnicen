@@ -1,19 +1,64 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 9, 19);
+    // Función que comprueba si el usuario tiene el rol de 'admin'.
+    function isAdmin() {
+      return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // --- REGLAS PARA COLECCIONES PÚBLICAS ---
+    // Cualquiera puede leer, solo los administradores pueden escribir.
+
+    match /cuerpoTecnico/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /galeriaQuienesSomos/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /home_quicklinks/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /noticias/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /paginas/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /queHacemos_actividades/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /queHacemos_categorias/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /queHacemos_torneos/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /sponsors/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- REGLAS PARA LA COLECCIÓN DE USUARIOS ---
+    match /users/{userId} {
+      // Un usuario puede leer/escribir sus propios datos, O un administrador puede hacerlo.
+      allow read, write: if (request.auth != null && request.auth.uid == userId) || isAdmin();
     }
   }
 }
